@@ -5,4 +5,4 @@ watch:
 	coffee -m -w -o public/js -j all -c `find src/ -iname *.coffee`
 
 server: coffee
-	cd public && python -m SimpleHTTPServer
+	cd public && python2 -m SimpleHTTPServer

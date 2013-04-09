@@ -1,8 +1,8 @@
 coffee:
-	coffee -m -o public/js -j all -c `find src/ -iname *.coffee`
+	coffee -m -o src/js -j all -c `find src/coffee/ -iname *.coffee`
 
 watch:
-	coffee -m -w -o public/js -j all -c `find src/ -iname *.coffee`
+	coffee -m -w -o src/js -j all -c `find src/coffee/ -iname *.coffee`
 
 server: coffee
-	cd public && python2 -m SimpleHTTPServer
+	cd src && python2 -m SimpleHTTPServer

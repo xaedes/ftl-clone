@@ -2,7 +2,7 @@ tab2space:
 	find src/coffee/ -iname *.coffee -exec sed -i s/'\t'/'    '/g '{}' \;
 
 coffee:
-	coffee -m -o src/js -c src/coffee/
+	coffee -m -o src/js/ -c src/coffee/
 #	coffee -m -o src/js -c `find src/coffee/ -iname *.coffee`
 
 watch:

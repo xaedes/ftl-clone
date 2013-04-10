@@ -1,19 +1,11 @@
-define(["person"], (Person) ->
-    #canvas = init.canvas
-    
-    # canvas.addChild(image);
-    
-    #human23 = new Human
+define(["init", "person"], (init, Person) ->
+    canvas = init.canvas
 
-    canvas = oCanvas.create({
-        canvas: "#canvas",
-        background: "#000"
+    
+    sampleHuman = canvas.display.person({
+    	type: 'human',
+    	x: 79
     })
     
-    myObj = canvas.display.person({
-        x: 79
-    })
-    
-    
-    canvas.addChild(myObj);
+    canvas.addChild(sampleHuman);
 )

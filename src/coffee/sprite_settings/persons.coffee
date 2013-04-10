@@ -1,6 +1,7 @@
 define([""], () ->
+    races = ["human","crystal","engi","energy","female","mantis","rock","slug"]
     personsSprites = (race) ->
-        if race not in ["human"] 
+        if race not in races 
             return
         
         personBase = {
@@ -38,6 +39,9 @@ define([""], () ->
             
             
         return sprites
+    sprites = {}
+    for race in races
+    	sprites[race] = personsSprites(race)
     
-    return {human: personsSprites("human")}
+    return sprites
 )

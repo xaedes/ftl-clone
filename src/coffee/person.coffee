@@ -1,4 +1,4 @@
-define(["sprite_settings"], (sprites) ->
+define(["init","sprite_settings"], (init,sprites) ->
 
 
     Person = {
@@ -26,7 +26,9 @@ define(["sprite_settings"], (sprites) ->
         settings.shapeType = "rectangular"
         oCanvas.extend(Person, settings)
 
-    oCanvas.registerDisplayObject("person", personObjectWrapper, "init");
-
+    oCanvas.registerDisplayObject("person", personObjectWrapper, "init")
+    
+    # Activate displayObject on init.canvas
+    init.canvas.display.person = oCanvas.modules.display.person.setCore(init.canvas)
     
 )

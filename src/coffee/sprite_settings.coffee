@@ -15,12 +15,9 @@ define([""], () ->
         }
     }
         
-    HumanSprites.normal_right = oCanvas.extend({}, HumanSprites.normal_down)
-    HumanSprites.normal_right.offset_x = 4*35
-    HumanSprites.normal_up = oCanvas.extend({}, HumanSprites.normal_down)
-    HumanSprites.normal_up.offset_x = 2*4*35
-    HumanSprites.normal_left = oCanvas.extend({}, HumanSprites.normal_down)
-    HumanSprites.normal_left.offset_x = 3*4*35
+    HumanSprites.normal_right = oCanvas.extend({offset_x:4*35}, HumanSprites.normal_down)
+    HumanSprites.normal_up = oCanvas.extend({offset_x:2*4*35}, HumanSprites.normal_down)
+    HumanSprites.normal_left = oCanvas.extend({offset_x:4*4*35}, HumanSprites.normal_down)
 
     return {human: HumanSprites}
 )

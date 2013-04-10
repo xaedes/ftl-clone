@@ -1,7 +1,7 @@
 define([], () -> {
         
-    canvas: oCanvas.create({
-        canvas: "#canvas",
+    canvas: oCanvas.create(
+        canvas: "#canvas"
         background: "#000"
-    })
+    )
 })

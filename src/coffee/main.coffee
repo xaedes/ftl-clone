@@ -2,10 +2,11 @@ define(["init","human"], (init,Human) ->
     
     # canvas.addChild(image);
     
-    human23 = new Human
+    human23 = new Human(init.canvas)
+    
+    human23.addToCanvas()
     
     
-    
-    init.canvas.addChild(Human.sprite_walking_down);
+#    init.canvas.addChild(human23);
 
 )

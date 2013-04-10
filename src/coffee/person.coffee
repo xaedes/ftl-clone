@@ -22,8 +22,7 @@ define([], () ->
     HumanSprites.normal_left = oCanvas.extend({}, HumanSprites.normal_down)
     HumanSprites.normal_left.offset_x = 3*4*35
 
-
-    Human = {
+    Person = {
         init: () ->
             @sprite_settings = HumanSprites.normal_right
             @updatePosition()
@@ -40,12 +39,12 @@ define([], () ->
 
     }
     
-    humanObjectWrapper = (settings, core) ->
+    personObjectWrapper = (settings, core) ->
         settings.core = core
         settings.shapeType = "rectangular"
-        oCanvas.extend(Human, settings)
+        oCanvas.extend(Person, settings)
 
-    oCanvas.registerDisplayObject("human", humanObjectWrapper, "init");
+    oCanvas.registerDisplayObject("person", personObjectWrapper, "init");
 
     
 )

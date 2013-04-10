@@ -9,8 +9,10 @@ define(["init","sprite_settings"], (init,sprites) ->
                     console.log "Error. Unknown ship model!"
             @updatePosition()
 
-            background = @core.display.image( @sprite_settings )
-            @core.addChild(background);
+            floor = @core.display.image( @sprite_settings.floor )
+            base = @core.display.image( @sprite_settings.base )
+            @addChild(base)
+            @addChild(floor)
         
         draw: () ->
             # update

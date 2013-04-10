@@ -4,7 +4,7 @@ define(["init","sprite_settings"], (init,sprites) ->
     Person = {
         init: () ->
             switch @race
-                when "human" then @sprite_settings = sprites.human.normal_right
+                when "human" then @sprite_settings = sprites.human.yellow.walking.right
                 else 
                     console.log "Error. Unknown person type!"
             @updatePosition()

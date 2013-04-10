@@ -3,10 +3,10 @@ define(["init","sprite_settings"], (init,sprites) ->
 
     Person = {
         init: () ->
-            switch @race
-                when "human" then @sprite_settings = sprites.human.yellow.walking.right
-                else 
-                    console.log "Error. Unknown person type!"
+            if @race not in ["human"] 
+                console.log "Error. Unknown person type!"
+                return
+            @sprite_settings = sprites[@race].yellow.walking.right
             @updatePosition()
 
             sprite = @core.display.sprite( @sprite_settings )

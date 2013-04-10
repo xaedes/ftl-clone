@@ -14,25 +14,30 @@ define([""], () ->
             autostart: true
         }
         
-        sprites = {
-            yellow: {
+        colors = ["yellow","highlight","red","green"]
+        
+        sprites = {}
+        for color in colors
+            sprites[color] = {
                 walking: {},
                 extinguish_fire: {},
             }
-        }
-        sprites.yellow.walking.down = oCanvas.extend({image: "img/people/"+race+"_player_yellow.png"},peopleBase)
-        sprites.yellow.walking.right = oCanvas.extend({offset_x:1*4*35}, sprites.yellow.walking.down)
-        sprites.yellow.walking.up = oCanvas.extend({offset_x:2*4*35}, sprites.yellow.walking.down)
-        sprites.yellow.walking.left = oCanvas.extend({offset_x:4*4*35}, sprites.yellow.walking.down)
-        
-        sprites.yellow.extinguish_fire.down = oCanvas.extend({
-            image: "img/people/"+race+"_player_yellow.png",
-            offset_y: 3*35
-        },peopleBase)
-        sprites.yellow.extinguish_fire.right = oCanvas.extend({offset_x:1*4*35}, sprites.yellow.extinguish_fire.down)
-        sprites.yellow.extinguish_fire.up = oCanvas.extend({offset_x:2*4*35}, sprites.yellow.extinguish_fire.down)
-        sprites.yellow.extinguish_fire.left = oCanvas.extend({offset_x:4*4*35}, sprites.yellow.extinguish_fire.down)
-        
+            filename = race+"_"+(if color != "red" then "player" else "enemy")+"_"+color
+            
+            sprites[color].walking.down = oCanvas.extend({image: "img/people/"+filename+".png"},peopleBase)
+            sprites[color].walking.right = oCanvas.extend({offset_x:1*4*35}, sprites[color].walking.down)
+            sprites[color].walking.up = oCanvas.extend({offset_x:2*4*35}, sprites[color].walking.down)
+            sprites[color].walking.left = oCanvas.extend({offset_x:4*4*35}, sprites[color].walking.down)
+            
+#            sprites[color].extinguish_fire.down = oCanvas.extend({
+#                image: "img/people/"+filename+".png",
+#                offset_y: 3*35
+#            },peopleBase)
+#            sprites[color].extinguish_fire.right = oCanvas.extend({offset_x:1*4*35}, sprites[color].extinguish_fire.down)
+#            sprites[color].extinguish_fire.up = oCanvas.extend({offset_x:2*4*35}, sprites[color].extinguish_fire.down)
+#            sprites[color].extinguish_fire.left = oCanvas.extend({offset_x:4*4*35}, sprites[color].extinguish_fire.down)
+            
+            
         return sprites
         
 #    HumanSprites = {

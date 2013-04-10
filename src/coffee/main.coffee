@@ -4,7 +4,8 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
     
     sampleHuman = canvas.display.person({
         race: 'human',
-        x: 79
+        x: 200,
+        y: 80,
     })
 
     sampleShip= canvas.display.ship({
@@ -12,6 +13,12 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
         x: 79
     })
     
-    canvas.addChild(sampleHuman);
     canvas.addChild(sampleShip);
+    canvas.addChild(sampleHuman);
+    
+    canvas.setLoop(() -> 
+        sampleHuman.x++
+        sampleHuman.x = Math.min(500,sampleHuman.x)
+    )
+    canvas.timeline.start()
 )

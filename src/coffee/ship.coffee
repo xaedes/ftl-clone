@@ -4,7 +4,7 @@ define(["init","sprite_settings"], (init,sprites) ->
     Ship = {
         init: () ->
             switch @model
-                when "kestral" then @sprite_settings = sprites.ship.kestral
+                when "kestral" then @sprite_settings = sprites.ships.kestral
                 else 
                     console.log "Error. Unknown ship model!"
             @updatePosition()

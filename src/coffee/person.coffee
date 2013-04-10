@@ -6,7 +6,7 @@ define(["init","sprite_settings"], (init,sprites) ->
             if @race not in ["human"] 
                 console.log "Error. Unknown person type!"
                 return
-            @sprite_settings = sprites[@race].yellow.walking.right
+            @sprite_settings = sprites.persons[@race].yellow.walking.right
             @updatePosition()
 
             sprite = @core.display.sprite( @sprite_settings )

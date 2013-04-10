@@ -1,4 +1,4 @@
-define( -> {
+define(["human"], (human) -> {
         
     canvas: oCanvas.create({
         canvas: "#canvas",

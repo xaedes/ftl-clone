@@ -1,13 +1,9 @@
-define(["init"], (init) ->
-    
+define([], () ->
 
-    console.log("human")
-
-    class Human
-        
-        @sprite_walking_down: init.canvas.display.sprite({
-            x: 177,
-            y: 80,
+    HumanSprites = {
+        normal_down: {
+            x: 0,
+            y: 0,
             image: "img/people/human_player_yellow.png"
             width: 35,
             height: 35,
@@ -16,22 +12,40 @@ define(["init"], (init) ->
             numFrames: 4,
             duration: 250,
             autostart: true
-        })
+        }
+    }
         
-#        @sprite_walking_right: Human.sprite_walking_down({
-#            offset_x: 4*35
-#        })
-#        @sprite_walking_up: @sprite_walking_down({
-#            offset_x: 2*4*35
-#        })
-#        @sprite_walking_left: @sprite_walking_down({
-#            offset_x: 3*4*35
-#        })
+    HumanSprites.normal_right = oCanvas.extend({}, HumanSprites.normal_down)
+    HumanSprites.normal_right.offset_x = 4*35
+    HumanSprites.normal_up = oCanvas.extend({}, HumanSprites.normal_down)
+    HumanSprites.normal_up.offset_x = 2*4*35
+    HumanSprites.normal_left = oCanvas.extend({}, HumanSprites.normal_down)
+    HumanSprites.normal_left.offset_x = 3*4*35
+
+
+    Human = {
+        init: () ->
+            @sprite_settings = HumanSprites.normal_right
+            @updatePosition()
+
+            sprite = @core.display.sprite( @sprite_settings )
+            @core.addChild(sprite);
         
-        constructor: () -> 
-           console.log "ok"
+        draw: () ->
+            # update
+
+        updatePosition: () ->
+            @sprite_settings.x = @x
+            @sprite_settings.y = @y
+
+    }
     
-    oCanvas.extend(Human,oCanvas.core)
+    humanObjectWrapper = (settings, core) ->
+        settings.core = core
+        settings.shapeType = "rectangular"
+        oCanvas.extend(Human, settings)
+
+    oCanvas.registerDisplayObject("human", humanObjectWrapper, "init");
+
     
-    return Human
 )

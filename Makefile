@@ -1,8 +1,11 @@
+tab2space:
+	find src/coffee/ -iname *.coffee -exec sed -i s/'\t'/'    '/g '{}' \;
+
 coffee:
-	coffee -m -o src/js -j all -c `find src/coffee/ -iname *.coffee`
+	coffee -m -o src/js -c `find src/coffee/ -iname *.coffee`
 
 watch:
-	coffee -m -w -o src/js -j all -c `find src/coffee/ -iname *.coffee`
+	coffee -m -w -o src/js -c `find src/coffee/ -iname *.coffee`
 
 server: coffee
-	cd src && python2 -m SimpleHTTPServer
+	python2 -m SimpleHTTPServer

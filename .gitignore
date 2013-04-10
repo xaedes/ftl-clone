@@ -1,5 +1,5 @@
 .*~
-src/js/.js
-src/js/.map
+src/js/*.js
+src/js/*.map
 
 src/img

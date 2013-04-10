@@ -28,13 +28,13 @@ define([""], () ->
             sprites[color].walking.up = oCanvas.extend({offset_x:2*4*35}, sprites[color].walking.down)
             sprites[color].walking.left = oCanvas.extend({offset_x:4*4*35}, sprites[color].walking.down)
             
-#            sprites[color].extinguish_fire.down = oCanvas.extend({
-#                image: "img/people/"+filename+".png",
-#                offset_y: 3*35
-#            },peopleBase)
-#            sprites[color].extinguish_fire.right = oCanvas.extend({offset_x:1*4*35}, sprites[color].extinguish_fire.down)
-#            sprites[color].extinguish_fire.up = oCanvas.extend({offset_x:2*4*35}, sprites[color].extinguish_fire.down)
-#            sprites[color].extinguish_fire.left = oCanvas.extend({offset_x:4*4*35}, sprites[color].extinguish_fire.down)
+            sprites[color].extinguish_fire.down = oCanvas.extend({
+                image: "img/people/"+filename+".png",
+                offset_y: 3*35
+            },personBase)
+            sprites[color].extinguish_fire.right = oCanvas.extend({offset_x:1*4*35}, sprites[color].extinguish_fire.down)
+            sprites[color].extinguish_fire.up = oCanvas.extend({offset_x:2*4*35}, sprites[color].extinguish_fire.down)
+            sprites[color].extinguish_fire.left = oCanvas.extend({offset_x:4*4*35}, sprites[color].extinguish_fire.down)
             
             
         return sprites

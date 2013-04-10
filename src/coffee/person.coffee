@@ -10,7 +10,7 @@ define(["init","sprite_settings"], (init,sprites) ->
             @updatePosition()
 
             sprite = @core.display.sprite( @sprite_settings )
-            @core.addChild(sprite);
+            @addChild(sprite);
         
         draw: () ->
             # update

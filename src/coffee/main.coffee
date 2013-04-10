@@ -3,22 +3,22 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
 
     
     sampleHuman = canvas.display.person({
-        race: 'human',
-        x: 200,
-        y: 80,
+        race: 'human'
+        tile_x: 0
+        tile_y: 0
     })
 
     sampleShip= canvas.display.ship({
-        model: 'kestral',
-        x: 79
+        model: 'kestral'
+        x: 100
+        y: 100
     })
     
     canvas.addChild(sampleShip);
-    canvas.addChild(sampleHuman);
+    sampleShip.addChild(sampleHuman);
     
     canvas.setLoop(() -> 
-        sampleHuman.x++
-        sampleHuman.x = Math.min(500,sampleHuman.x)
+        sampleHuman.update
     )
     canvas.timeline.start()
 )

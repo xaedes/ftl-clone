@@ -1,5 +1,11 @@
 .*~
 src/js/*.js
 src/js/*.map
+src/js/sprite_settings/*.js
+src/js/sprite_settings/*.map
 
 src/img
+/ftl-resources/
+/.directory
+/.directory.lock
+/.project

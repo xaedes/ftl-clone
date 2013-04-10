@@ -1,6 +1,4 @@
-define(["init","sprite_settings"], (init,sprites) ->
-
-
+define(["init","sprite_settings","container"], (init,sprites,Container) ->
     Ship = {
         init: () ->
             switch @model
@@ -8,11 +6,15 @@ define(["init","sprite_settings"], (init,sprites) ->
                 else 
                     console.log "Error. Unknown ship model!"
             @updatePosition()
-
+            
             floor = @core.display.image( @sprite_settings.floor )
             base = @core.display.image( @sprite_settings.base )
-            @addChild(base)
-            @addChild(floor)
+
+            @background = init.canvas.display.container({})
+            @background.addChild(base)
+            @background.addChild(floor)
+
+            @addChild(@background)
         
         draw: () ->
             # update

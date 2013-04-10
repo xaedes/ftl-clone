@@ -3,7 +3,7 @@ define(["init", "person"], (init, Person) ->
 
     
     sampleHuman = canvas.display.person({
-    	type: 'human',
+    	race: 'human',
     	x: 79
     })
     

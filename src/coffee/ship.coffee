@@ -4,9 +4,10 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             switch @model
                 when "kestral" 
                     @sprite_settings = sprites.ships.kestral
-                    @tile_offset: 
+                    @tile_offset = 
                         x: 71
                         y: 116
+                    @tile_size = 35 
                 else 
                     console.log "Error. Unknown ship model!"
             
@@ -21,9 +22,9 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
         
         draw: () ->
             # update
-
+        
         addPerson: (person) ->
-        	# ...
+            person.ship = this
             
 
     

@@ -29,6 +29,15 @@ define(["init", "person", "ship", "person_ki"], (init, Person, Ship, KI) ->
     sampleShip.addPerson(samplePerson1);
     sampleShip.addPerson(samplePerson2);
     sampleShip.addPerson(samplePerson3);
+    for num in [1..3]
+        person = canvas.display.person(
+            race: ['rock','human','female','engi'][Math.floor(Math.random()*4)]
+            tile_x: Math.round(Math.random()*5 + 5)
+            tile_y: Math.round(Math.random()*5 + 3)
+            selectable: false
+        )
+        sampleShip.addPerson(person);
+        person.mission = KI.RandomWalker.create(person)
     
     samplePerson3.mission = KI.RandomWalker.create(samplePerson3)
     

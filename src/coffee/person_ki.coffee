@@ -54,11 +54,15 @@ define([], () ->
         new_dest: () ->
             rx = (Math.random()*2-1)*2
             ry = (Math.random()*2-1)*2
-            x = Math.round(Math.clip(@person.tile_x+rx,0,10))
-            y = Math.round(Math.clip(@person.tile_y+ry,0,10))
+            x = Math.round(Math.clip(@person.tile_x+rx,6,9))
+            y = Math.round(Math.clip(@person.tile_y+ry,1,4))
             @mission = KI.SimpleTileMovement.create(@person,x,y)
             @mission.finished = () =>
-                @new_dest()
+                @mission.finished = () ->
+                    return
+                window.setTimeout(()=>
+                    @new_dest()
+                ,Math.round(1000-250+500*Math.random()))
         
         update: () ->
             if not @mission?

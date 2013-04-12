@@ -19,6 +19,7 @@ define(["init","sprite_settings"], (init,sprites) ->
             return oCanvas.extend({person:person,x:x,y:y},SimpleTileMovement)
         
         update: () ->
+            
             # calculate actual deltas
             adx = @x - @person.tile_x
             ady = @y - @person.tile_y
@@ -31,21 +32,49 @@ define(["init","sprite_settings"], (init,sprites) ->
             # move
             @person.tile_x += dx
             @person.tile_y += dy
+            
+            # activate correct walking animation
+            if (dx > 0) and (dy == 0)
+                sprite = @person.right
+            if (dx < 0) and (dy == 0)
+                sprite = @person.left
+                
+            if (dx == 0) and (dy < 0)
+                sprite = @person.up
+            if (dx == 0) and (dy > 0)
+                sprite = @person.down
+                
+            @person.setSprite(sprite) if sprite?
+
     
     Person = 
         init: () ->
             if @race not in ["human"] 
                 console.log "Error. Unknown person type!"
                 return
-            @sprite_settings = sprites.persons[@race].yellow.walking.right
             
+            # One tile per second
             @tilespeed = 1 / init.canvas.settings.fps
             
-            sprite = @core.display.sprite( @sprite_settings )
-            @addChild(sprite);
+            @active_sprite = null
+            @sprites = sprites.persons[@race]
+            
+            @right = init.canvas.display.sprite(@sprites.yellow.walking.right)
+            @left = init.canvas.display.sprite(@sprites.yellow.walking.left)
+            @up = init.canvas.display.sprite(@sprites.yellow.walking.up)
+            @down = init.canvas.display.sprite(@sprites.yellow.walking.down)
+
+            @setSprite(@left)
             
             @mission = SimpleMovement.create(this,500,400)
-            
+        
+        setSprite: (sprite) ->
+            if @active_sprite == sprite
+                return
+            @removeChild(@active_sprite) if @active_sprite?
+            @active_sprite = sprite
+            @addChild(@active_sprite)
+        
         draw: () ->
             # update
         
@@ -63,9 +92,15 @@ define(["init","sprite_settings"], (init,sprites) ->
             @mission = SimpleTileMovement.create(this,@tile_x + dx,@tile_y + dy)
         
         update: () ->
+            if @lock 
+               return
+               
+            @lock = true
             @mission.update()
             @setTileXY(@tile_x,@tile_y)
-    
+            
+            @lock = false
+
     
     personObjectWrapper = (settings, core) ->
         settings.core = core

@@ -8,7 +8,7 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
         tile_y: 1
     )
 
-    sampleShip= canvas.display.ship(
+    sampleShip = canvas.display.ship(
         model: 'kestral'
         x: 0
         y: 0
@@ -25,11 +25,7 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
         )
     )
     
-    sampleHuman.bind("mouseenter", () ->
-        canvas.mouse.cursor("pointer")
-    ).bind("mouseleave",()->
-        canvas.mouse.cursor("default")
-    )
+
     
     canvas.setLoop(() -> 
         sampleHuman.update

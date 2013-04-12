@@ -1,4 +1,4 @@
-define(["init","sprite_settings"], (init,sprites) ->
+define(["init","sprite_settings","container"], (init,sprites,Container) ->
     
     SimpleMovement =
         create: (person, x, y) ->
@@ -55,8 +55,16 @@ define(["init","sprite_settings"], (init,sprites) ->
                 console.log "Error. Unknown person type!"
                 return
             
+
+            
             # One tile per second
             @tilespeed = 1 / init.canvas.settings.fps
+            
+            @sprite_container = init.canvas.display.container(
+                x: 0
+                y: 0
+            )
+            @addChild(@sprite_container)
             
             @active_sprite = null
             
@@ -75,14 +83,28 @@ define(["init","sprite_settings"], (init,sprites) ->
                 
             @setSprite(@sprites.yellow.walking.left)
             
-            @mission = SimpleMovement.create(this,500,400)
-        
+
+            
+            
+            @selection_area = init.canvas.display.container(
+                width: 16
+                height: 16
+                x: (35-16)/2
+                y: (35-16)/2
+            )
+            @addChild(@selection_area)            
+            @selection_area.bind("mouseenter", () ->
+                init.canvas.mouse.cursor("pointer")
+            ).bind("mouseleave",()->
+                init.canvas.mouse.cursor("default")
+            )
+            
         setSprite: (sprite) ->
             if @active_sprite == sprite
                 return
-            @removeChild(@active_sprite) if @active_sprite?
+            @sprite_container.removeChild(@active_sprite) if @active_sprite?
             @active_sprite = sprite
-            @addChild(@active_sprite)
+            @sprite_container.addChild(@active_sprite)
         
         draw: () ->
             # update
@@ -105,7 +127,7 @@ define(["init","sprite_settings"], (init,sprites) ->
                return
                
             @lock = true
-            @mission.update()
+            @mission.update() if @mission?
             @setTileXY(@tile_x,@tile_y)
             
             @lock = false

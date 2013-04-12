@@ -1,5 +1,8 @@
 define([""], () ->
     races = ["human","crystal","engi","energy","female","mantis","rock","slug"]
+    
+    # FIXME mantis sprites differs from the others :/
+    
     personsSprites = (race) ->
         if race not in races 
             return

@@ -41,15 +41,17 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             return tile_pos
         
         selectPerson: (person) ->
+            if not person.selectable?
+                return
             @deselectPerson()
             @selected_person = person
             @selected_person.sprite.color = "green"
             @selected_person.sprite.update()
             
         deselectPerson: () ->
-        	if @selected_person?
-        	   @selected_person.sprite.color = "yellow"
-        	   @selected_person.sprite.update()
+            if @selected_person?
+               @selected_person.sprite.color = "yellow"
+               @selected_person.sprite.update()
             @selected_person = null
             
         draw: () ->
@@ -59,7 +61,8 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             person.ship = this
             @addChild(person)
             person.bind("click tap",(event) =>
-                @selectPerson(person)
+                if person.selectable
+                    @selectPerson(person)
                 event.stopPropagation()
             )
         

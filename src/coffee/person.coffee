@@ -13,6 +13,9 @@ define(["init","sprite_settings"], (init,sprites) ->
             @person.y += dy
             
     
+    Math.sign = (x) ->
+        if x == 0 then x else (if x < 0 then -1 else 1) 
+    
     SimpleTileMovement =
         # Handles movement of a person
         create: (person, x, y) ->
@@ -24,8 +27,8 @@ define(["init","sprite_settings"], (init,sprites) ->
             adx = @x - @person.tile_x
             ady = @y - @person.tile_y
             # normalize deltas
-            ndx = if adx == 0 then adx else adx / Math.abs(adx)
-            ndy = if ady == 0 then ady else ady / Math.abs(ady)
+            ndx = Math.sign(adx)
+            ndy = Math.sign(ady)
             # calculate deltas for movement
             dx = Math.min(@person.tilespeed * ndx, adx)
             dy = Math.min(@person.tilespeed * ndy, ady)

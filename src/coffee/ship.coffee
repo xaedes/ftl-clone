@@ -25,9 +25,7 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
                 if @selected_person?
                     switch event.which
                         when 1 # left click
-                            @selected_person.sprite.color = "yellow"
-                            @selected_person.sprite.update()
-                            @selected_person = null
+                            @deselectPerson()
                         when 2 # right click
                             tile_pos = @calculateTileXY(event.x, event.y)
                             @selected_person.moveToTileXY(tile_pos.x,tile_pos.y)
@@ -41,8 +39,19 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
                 tile_pos.x = Math.floor(tile_pos.x)
                 tile_pos.y = Math.floor(tile_pos.y)
             return tile_pos
-
         
+        selectPerson: (person) ->
+            @deselectPerson()
+            @selected_person = person
+            @selected_person.sprite.color = "green"
+            @selected_person.sprite.update()
+            
+        deselectPerson: () ->
+        	if @selected_person?
+        	   @selected_person.sprite.color = "yellow"
+        	   @selected_person.sprite.update()
+            @selected_person = null
+            
         draw: () ->
             # update
         
@@ -50,10 +59,7 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             person.ship = this
             @addChild(person)
             person.bind("click tap",(event) =>
-                # Select
-                @selected_person = person
-                @selected_person.sprite.color = "green"
-                @selected_person.sprite.update()
+                @selectPerson(person)
                 event.stopPropagation()
             )
         

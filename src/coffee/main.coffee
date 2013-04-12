@@ -2,10 +2,15 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
     canvas = init.canvas
 
     
-    sampleHuman = canvas.display.person(
+    samplePerson1 = canvas.display.person(
         race: 'human'
         tile_x: 1
         tile_y: 1
+    )
+    samplePerson2 = canvas.display.person(
+        race: 'rock'
+        tile_x: 2
+        tile_y: 2
     )
 
     sampleShip = canvas.display.ship(
@@ -15,10 +20,11 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
     )
     
     canvas.addChild(sampleShip);
-    sampleShip.addPerson(sampleHuman);
+    sampleShip.addPerson(samplePerson1);
+    sampleShip.addPerson(samplePerson2);
     
     canvas.setLoop(() -> 
-        sampleHuman.update
+        #sampleHuman.update
     )
     canvas.timeline.start()
 )

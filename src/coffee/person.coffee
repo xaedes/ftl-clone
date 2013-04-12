@@ -36,10 +36,13 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             return oCanvas.extend({person:person,x:x,y:y},SimpleTileMovement)
         
         update: () ->
-            
             # calculate actual deltas
             adx = @x - @person.tile_x
             ady = @y - @person.tile_y
+            
+            if (adx == 0) and (ady == 0)
+                @finished()
+            
             # normalize deltas
             ndx = Math.sign(adx)
             ndy = Math.sign(ady)
@@ -54,11 +57,14 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             direction = directions[ndx][ndy]
             @person.sprite.direction = direction if direction?
             @person.sprite.update()
-
+        
+        finished: () ->
+            @person.sprite.direction = "down"
+            @person.sprite.update()
     
     Person = 
         init: () ->
-            if @race not in ["human"] 
+            if @race not in ["human","crystal","engi","energy","female","mantis","rock","slug"]
                 console.log "Error. Unknown person type!"
                 return
             

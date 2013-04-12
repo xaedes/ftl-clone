@@ -4,18 +4,22 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
     
     sampleHuman = canvas.display.person(
         race: 'human'
-        tile_x: 0
-        tile_y: 0
+        tile_x: 1
+        tile_y: 1
     )
 
     sampleShip= canvas.display.ship(
         model: 'kestral'
-        x: 100
-        y: 100
+        x: 0
+        y: 0
     )
     
     canvas.addChild(sampleShip);
-    sampleShip.addChild(sampleHuman);
+    sampleShip.addPerson(sampleHuman);
+    
+    sampleHuman.bind("click tap",() ->
+        sampleHuman.moveByTileXY(1,0)
+    )
     
     canvas.setLoop(() -> 
         sampleHuman.update

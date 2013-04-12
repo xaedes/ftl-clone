@@ -25,6 +25,7 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
         
         addPerson: (person) ->
             person.ship = this
+            @addChild(person)
             
 
     

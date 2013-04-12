@@ -30,7 +30,7 @@ define(["init","sprite_settings"], (init,sprites) ->
             ndx = Math.sign(adx)
             ndy = Math.sign(ady)
             # calculate deltas for movement
-            dx = Math.min(@person.tilespeed * ndx, adx)
+            dx = Math.min(@person.tilespeed * ndx, adx) # go maximal the actual difference, not more
             dy = Math.min(@person.tilespeed * ndy, ady)
             # move
             @person.tile_x += dx

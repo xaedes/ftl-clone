@@ -19,6 +19,13 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             @background.addChild(floor)
             
             @addChild(@background)
+            
+            @bind("click tap",() => 
+                if @selected_person?
+                    @selected_person.sprite.color = "yellow"
+                    @selected_person.sprite.update()
+                    @selected_person = null
+            )
         
         draw: () ->
             # update
@@ -26,13 +33,14 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
         addPerson: (person) ->
             person.ship = this
             @addChild(person)
-            person.bind("click tap",()=>
+            person.bind("click tap",(event) =>
                 # Select
                 @selected_person = person
                 @selected_person.sprite.color = "green"
                 @selected_person.sprite.update()
+                event.stopPropagation()
             )
-
+        
     
     shipObjectWrapper = (settings, core) ->
         settings.core = core

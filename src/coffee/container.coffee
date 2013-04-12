@@ -3,13 +3,13 @@ define(["init"], (init) ->
         init: () ->
         
         draw: () ->
-            # update
+            
     
     
     containerObjectWrapper = (settings, core) ->
         settings.core = core
         settings.shapeType = "rectangular"
-        oCanvas.extend(Container, settings)
+        oCanvas.extend({},Container, settings)
     
     oCanvas.registerDisplayObject("container", containerObjectWrapper, "init")
     

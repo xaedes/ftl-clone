@@ -32,7 +32,7 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
     shipObjectWrapper = (settings, core) ->
         settings.core = core
         settings.shapeType = "rectangular"
-        oCanvas.extend(Ship, settings)
+        oCanvas.extend({}, Ship, settings)
 
     oCanvas.registerDisplayObject("ship", shipObjectWrapper, "init")
     

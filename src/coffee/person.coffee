@@ -114,7 +114,7 @@ define(["init","sprite_settings"], (init,sprites) ->
     personObjectWrapper = (settings, core) ->
         settings.core = core
         settings.shapeType = "rectangular"
-        oCanvas.extend(Person, settings)
+        oCanvas.extend({}, Person, settings)
 
     oCanvas.registerDisplayObject("person", personObjectWrapper, "init")
     

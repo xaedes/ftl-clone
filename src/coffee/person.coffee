@@ -104,10 +104,14 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
                 y: (35-16)/2
             )
             @addChild(@selection_area)            
-            @selection_area.bind("mouseenter", () ->
+            @selection_area.bind("mouseenter", () =>
                 init.canvas.mouse.cursor("pointer")
-            ).bind("mouseleave",()->
+                @sprite.color="highlight"
+                @sprite.update()
+            ).bind("mouseleave",()=>
                 init.canvas.mouse.cursor("default")
+                @sprite.color="yellow"
+                @sprite.update()
             )
             
             

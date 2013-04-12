@@ -99,6 +99,7 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
                 init.canvas.mouse.cursor("default")
             )
             
+            
         setSprite: (sprite) ->
             if @active_sprite == sprite
                 return
@@ -131,6 +132,12 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             @setTileXY(@tile_x,@tile_y)
             
             @lock = false
+        
+        bind: (types, handler) ->
+            @selection_area.bind(types, handler)
+            
+        unbind: (types, handler) ->
+            @selection_area.unbind(types, handler)
 
     
     personObjectWrapper = (settings, core) ->

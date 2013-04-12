@@ -14,7 +14,7 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             
     
     Math.sign = (x) ->
-        if x == 0 then x else (if x < 0 then -1 else 1) 
+        if x == 0 then 0 else (if x < 0 then -1 else 1) 
     
     directions=
         "-1":
@@ -44,8 +44,8 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             ndx = Math.sign(adx)
             ndy = Math.sign(ady)
             # calculate deltas for movement
-            dx = Math.min(@person.tilespeed * ndx, adx) # go maximal the actual difference, not more
-            dy = Math.min(@person.tilespeed * ndy, ady)
+            dx = Math.min(@person.tilespeed, Math.abs(adx) ) * ndx # go maximal the actual difference, not more
+            dy = Math.min(@person.tilespeed, Math.abs(ady) ) * ndy 
             # move
             @person.tile_x += dx
             @person.tile_y += dy

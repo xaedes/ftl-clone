@@ -16,6 +16,20 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
     Math.sign = (x) ->
         if x == 0 then x else (if x < 0 then -1 else 1) 
     
+    directions=
+        "-1":
+            "-1": "left"
+            "0": "left"
+            "1": "left"
+        "0":
+            "-1": "up"
+            "0": null
+            "1": "down"
+        "1":
+            "-1": "right"
+            "0": "right"
+            "1": "right"
+    
     SimpleTileMovement =
         # Handles movement of a person
         create: (person, x, y) ->
@@ -37,17 +51,10 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             @person.tile_y += dy
             
             # activate correct walking animation
-            if (dx > 0) and (dy == 0)
-                sprite = @person.sprites.yellow.walking.right
-            if (dx < 0) and (dy == 0)
-                sprite = @person.sprites.yellow.walking.left
-                
-            if (dx == 0) and (dy < 0)
-                sprite = @person.sprites.yellow.walking.up
-            if (dx == 0) and (dy > 0)
-                sprite = @person.sprites.yellow.walking.down
-                
-            @person.setSprite(sprite) if sprite?
+            direction = directions[ndx][ndy]
+            @person.sprite.direction = direction if direction?
+            @person.sprite.update()
+
     
     Person = 
         init: () ->
@@ -81,10 +88,14 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             
             @sprites = instantiate(sprites.persons[@race])
                 
-            @setSprite(@sprites.yellow.walking.left)
-            
-
-            
+            @sprite = 
+                color: "yellow"
+                action: "walking"
+                direction: "left"
+                update: () =>
+                    @setSprite(@sprites[@sprite.color][@sprite.action][@sprite.direction])
+                
+            @sprite.update()
             
             @selection_area = init.canvas.display.container(
                 width: 16

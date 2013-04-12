@@ -35,17 +35,16 @@ define(["init","sprite_settings"], (init,sprites) ->
             
             # activate correct walking animation
             if (dx > 0) and (dy == 0)
-                sprite = @person.right
+                sprite = @person.sprites.yellow.walking.right
             if (dx < 0) and (dy == 0)
-                sprite = @person.left
+                sprite = @person.sprites.yellow.walking.left
                 
             if (dx == 0) and (dy < 0)
-                sprite = @person.up
+                sprite = @person.sprites.yellow.walking.up
             if (dx == 0) and (dy > 0)
-                sprite = @person.down
+                sprite = @person.sprites.yellow.walking.down
                 
             @person.setSprite(sprite) if sprite?
-
     
     Person = 
         init: () ->
@@ -57,14 +56,21 @@ define(["init","sprite_settings"], (init,sprites) ->
             @tilespeed = 1 / init.canvas.settings.fps
             
             @active_sprite = null
-            @sprites = sprites.persons[@race]
             
-            @right = init.canvas.display.sprite(@sprites.yellow.walking.right)
-            @left = init.canvas.display.sprite(@sprites.yellow.walking.left)
-            @up = init.canvas.display.sprite(@sprites.yellow.walking.up)
-            @down = init.canvas.display.sprite(@sprites.yellow.walking.down)
-
-            @setSprite(@left)
+            instantiate = (obj) ->
+                newObj = {}
+                for i of obj
+                    if obj.hasOwnProperty(i)
+                        if obj[i].hasOwnProperty("image")
+                            newObj[i] = init.canvas.display.sprite(obj[i])
+                        else
+                        	newObj[i] = instantiate(obj[i])
+                
+                return newObj
+            
+            @sprites = instantiate(sprites.persons[@race])
+                
+            @setSprite(@sprites.yellow.walking.left)
             
             @mission = SimpleMovement.create(this,500,400)
         

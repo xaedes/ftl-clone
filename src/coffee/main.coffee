@@ -25,6 +25,12 @@ define(["init", "person", "ship"], (init, Person, Ship) ->
         )
     )
     
+    sampleHuman.bind("mouseenter", () ->
+        canvas.mouse.cursor("pointer")
+    ).bind("mouseleave",()->
+        canvas.mouse.cursor("default")
+    )
+    
     canvas.setLoop(() -> 
         sampleHuman.update
     )

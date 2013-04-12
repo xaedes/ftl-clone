@@ -26,7 +26,12 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
         addPerson: (person) ->
             person.ship = this
             @addChild(person)
-            
+            person.bind("click tap",()=>
+                # Select
+                @selected_person = person
+                @selected_person.sprite.color = "green"
+                @selected_person.sprite.update()
+            )
 
     
     shipObjectWrapper = (settings, core) ->

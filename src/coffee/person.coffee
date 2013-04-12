@@ -106,11 +106,11 @@ define(["init","sprite_settings","container"], (init,sprites,Container) ->
             @addChild(@selection_area)            
             @selection_area.bind("mouseenter", () =>
                 init.canvas.mouse.cursor("pointer")
-                @sprite.color="highlight"
+                @sprite.color="highlight" if this != @ship.selected_person
                 @sprite.update()
             ).bind("mouseleave",()=>
                 init.canvas.mouse.cursor("default")
-                @sprite.color="yellow"
+                @sprite.color="yellow" if this != @ship.selected_person
                 @sprite.update()
             )
             

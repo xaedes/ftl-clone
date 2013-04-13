@@ -25,6 +25,6 @@ with open(filename, "r") as f:
             i += len(keys[lines[i]])
         i += 1
         
-    print json.dumps({"rooms":objs["ROOM"],"doors":objs["DOOR"]}, indent=4, separators=(',', ': ')).replace('"','')
+    print json.dumps({"rooms":objs["ROOM"],"doors":objs["DOOR"]}, indent=4, separators=(',', ': ')) #.replace('"','')
     exit(0)
     

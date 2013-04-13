@@ -54,12 +54,12 @@ define(["math","init","sprite_settings","container","person_ki"], \
             @selection_area.bind("mouseenter", () =>
                 if @selectable
                     init.canvas.mouse.cursor("pointer")
-                    @sprite.color="highlight" if this != @ship.selected_person
+                    @sprite.color = "highlight" if this != @ship.selected_person
                     @sprite.update()
-            ).bind("mouseleave",()=>
+            ).bind("mouseleave", () =>
                 if @selectable
                     init.canvas.mouse.cursor("default")
-                    @sprite.color="yellow" if this != @ship.selected_person
+                    @sprite.color = "yellow" if this != @ship.selected_person
                     @sprite.update()
             )
             

@@ -37,8 +37,8 @@ define(["math","init","sprite_settings","container","person_ki"], \
                 
             @sprite = 
                 color: "yellow"
-                action: "walking"
-                direction: "left"
+                action: "standing"
+                direction: "down"
                 update: () =>
                     @setSprite(@sprites[@sprite.color][@sprite.action][@sprite.direction])
                 
@@ -92,7 +92,6 @@ define(["math","init","sprite_settings","container","person_ki"], \
             @mission.update() if @mission?
             @setTileXY(@tile_x,@tile_y)
             
-
         
         bind: (types, handler) ->
             @selection_area.bind(types, handler)

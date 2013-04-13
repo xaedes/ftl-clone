@@ -69,6 +69,7 @@ define(["math","init","sprite_settings","container","person_ki"], \
                 return
             @sprite_container.removeChild(@active_sprite) if @active_sprite?
             @active_sprite = sprite
+            @active_sprite.start()
             @sprite_container.addChild(@active_sprite)
         
         draw: () ->

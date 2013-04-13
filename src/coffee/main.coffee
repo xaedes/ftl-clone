@@ -1,3 +1,11 @@
+requirejs.config({
+    baseUrl: 'js',
+    paths: {
+        text: 'libs/text'
+        json: 'libs/json'
+    }
+})
+
 define(["init", "person", "ship", "person_ki"], (init, Person, Ship, KI) ->
     canvas = init.canvas
 

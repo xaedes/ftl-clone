@@ -11,6 +11,7 @@ define([""], () ->
             generate: true
             width: 35
             height: 35
+            numFrames: 1
         
         animated =
             direction: "x"

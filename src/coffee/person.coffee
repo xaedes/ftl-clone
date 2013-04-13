@@ -88,14 +88,11 @@ define(["math","init","sprite_settings","container","person_ki"], \
             @mission = KI.SimpleTileMovement.create(this,@tile_x + dx,@tile_y + dy)
         
         update: () ->
-            if @lock 
-               return
-               
             @lock = true
             @mission.update() if @mission?
             @setTileXY(@tile_x,@tile_y)
             
-            @lock = false
+
         
         bind: (types, handler) ->
             @selection_area.bind(types, handler)

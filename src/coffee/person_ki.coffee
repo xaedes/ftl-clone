@@ -16,6 +16,9 @@ define([], () ->
     KI.SimpleTileMovement =
         # Handles movement of a person
         create: (person, x, y) ->
+            person.sprite.action = "walking"
+            person.sprite.update()
+            
             return oCanvas.extend({person:person,x:x,y:y},KI.SimpleTileMovement)
         
         update: () ->
@@ -44,6 +47,7 @@ define([], () ->
         
         finished: () ->
             @person.sprite.direction = "down"
+            @person.sprite.action = "standing"
             @person.sprite.update()
         
     KI.RandomWalker =

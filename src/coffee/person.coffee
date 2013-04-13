@@ -1,4 +1,4 @@
-define(["Math","init","sprite_settings","container","person_ki"], \
+define(["math","init","sprite_settings","container","person_ki"], \
         (Math, init,sprites,Container,KI) ->
             
             

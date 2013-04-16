@@ -1,7 +1,15 @@
-define([], () -> {
-        
-    canvas: oCanvas.create(
-        canvas: "#canvas"
-        background: "#000"
-    )
-})
+define([], () -> 
+    init = {
+        stage: new Kinetic.Stage(
+            container: 'container'
+            width: 800
+            height: 600
+        )
+
+        layer: new Kinetic.Layer()
+    }
+
+    init.stage.add(init.layer)
+
+    return init
+)

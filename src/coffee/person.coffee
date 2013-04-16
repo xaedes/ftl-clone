@@ -1,7 +1,7 @@
-define(["init","assets"], \
-        (init, Assets) ->
+define(["init","assets","animations"], \
+        (init, Assets, animations) ->
             
-        
+    
     class Person extends Kinetic.Container
         selectable: true
         constructor: (config) ->
@@ -19,14 +19,14 @@ define(["init","assets"], \
                 x: 100
                 y: 100
                 image: Assets.image('img/people/human_player_green.png')
-                animation: 'walking_right'
-                animations: 
-                    walking_right: ({
-                        x: k*35
-                        y: 0
-                        width: 35
-                        height: 35
-                    } for k in [0,1,2,3])
+                animation: 'right'
+                animations: animations.persons.human.yellow.walking
+                    # walking_right: ({
+                    #     x: k*35
+                    #     y: 0
+                    #     width: 35
+                    #     height: 35
+                    # } for k in [0,1,2,3])
                 frameRate: 4
                 index: 0
             )

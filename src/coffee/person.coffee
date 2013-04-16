@@ -1,5 +1,5 @@
-define(["init"], \
-        (init) ->
+define(["init","assets"], \
+        (init, Assets) ->
             
         
     class Person extends Kinetic.Container
@@ -13,29 +13,30 @@ define(["init"], \
                 return
 
 
-            @image = new Image()
-            @image.onload = () =>
-                @sprite = new Kinetic.Sprite(
-                    x: 100
-                    y: 100
-                    image: @image
-                    animation: 'walking_right'
-                    animations: 
-                        walking_right: ({
-                            x: k*35
-                            y: 0
-                            width: 35
-                            height: 35
-                        } for k in [0,1,2,3])
-                    frameRate: 4
-                    index: 0
-                )
-                @add(@sprite)
-                @sprite.start()
-                init.stage.draw()
-            @image.src = 'img/people/human_player_yellow.png'
 
-    # Kinetic.Global.extend(Person, Kinetic.Container);
+
+            @sprite = new Kinetic.Sprite(
+                x: 100
+                y: 100
+                image: Assets.image('img/people/human_player_green.png')
+                animation: 'walking_right'
+                animations: 
+                    walking_right: ({
+                        x: k*35
+                        y: 0
+                        width: 35
+                        height: 35
+                    } for k in [0,1,2,3])
+                frameRate: 4
+                index: 0
+            )
+            @add(@sprite)
+            @sprite.attrs.image.onload = () =>
+                @sprite.start()
+
+            init.stage.draw()
+
+
     
     return Person
 )

@@ -1,12 +1,13 @@
 define(["utils","assets"], (Utils,Assets) ->
-    races = ["human","crystal","engi","energy","female","mantis","rock","slug"]
+    animations = {}
+    animations.races = ["human","crystal","engi","energy","female","mantis","rock","slug"]
     
     # FIXME mantis animations differs from the others :/
     
 
 
     personsAnimations = (race) ->
-        if race not in races 
+        if race not in animations.races 
             return
         
         size = 
@@ -14,11 +15,11 @@ define(["utils","assets"], (Utils,Assets) ->
             height: 35
 
         
-        animations = {}
-        animations.colors = ["yellow","highlight","red","green"]
+        anims = {}
+        anims.colors = ["yellow","highlight","red","green"]
         
-        for color in animations.colors
-            animations[color] = {}
+        for color in anims.colors
+            anims[color] = {}
             
             # "img/people/"+filename+".png"
             filename = race+"_"+(if color != "red" then "player" else "enemy")+"_"+color
@@ -34,15 +35,16 @@ define(["utils","assets"], (Utils,Assets) ->
 
             
 
-            animations[color].image = Assets.image('img/people/'+filename+'.png','persons')
-            animations[color].standing = genDirections(0, false)
-            animations[color].walking = genDirections(0)
-            animations[color].extinguish_fire = genDirections(3*size.height)
+            anims[color].image = Assets.image('img/people/'+filename+'.png','persons')
+            anims[color].standing = genDirections(0, false)
+            anims[color].walking = genDirections(0)
+            anims[color].extinguish_fire = genDirections(3*size.height)
 
-        return animations
-    animations = {}
-    for race in races
+        return anims
+    
+    for race in animations.races
     	animations[race] = personsAnimations(race)
+
     
     return animations
 )

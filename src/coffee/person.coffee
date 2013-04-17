@@ -8,7 +8,7 @@ define(["init","assets","animations"], \
             @attrs = {}
             Kinetic.Container.call(@, config) #Call super constructor
 
-            if @attrs.race not in ["human","crystal","engi","energy","female","mantis","rock","slug"]
+            if @attrs.race not in animations.persons.races
                 console.log "Error. Unknown person type!"
                 return
 

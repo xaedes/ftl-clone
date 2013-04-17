@@ -2,6 +2,7 @@ define(["init","animations","assets","person_ki"], (init,animations,Assets,Perso
 
 
     class Ship extends Kinetic.Group
+        persons: []
         constructor: (config) ->
             @attrs = 
                 # sprite_settings = animations.ships.kestral
@@ -22,8 +23,12 @@ define(["init","animations","assets","person_ki"], (init,animations,Assets,Perso
             @background = new Kinetic.Group({})
             @background.add(base)
             @background.add(floor)
+
+            # @persons = new Kinetic.Group({})
+
             
             @add(@background)
+            # @add(@persons)
 
 
             
@@ -72,15 +77,18 @@ define(["init","animations","assets","person_ki"], (init,animations,Assets,Perso
             person.ship = this
             @add(person)
             person.on("click",(event) =>
-                if person.attrs.selectable
-                    @selectPerson(person)
-                    event.cancelBubble = true
+                switch event.which
+                    when 1 # left click
+                        if person.attrs.selectable
+                            @selectPerson(person)
+                            event.cancelBubble = true
             )
             person.sprite.update()
-            
+            @persons.push(person)
 
         update: (elapsedTime) ->
-        
+            for person in @persons
+                person.update(elapsedTime)
     
     return Ship
     

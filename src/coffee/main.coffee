@@ -11,7 +11,8 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         person = new Person(
             layer: init.layers.persons
             race: "human"
-            tile_x: 0
+            tile_x: 1
+            tile_y: 1
         )
 
         ship = new Ship(
@@ -20,7 +21,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
 
         ship.addPerson(person)
 
-        person.mission = new PersonKI.SimpleTileMovement(person, 1,5)
+        person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
 
         init.layers.background.add(new Kinetic.Rect(
             width: init.stage.getWidth()

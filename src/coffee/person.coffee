@@ -54,8 +54,8 @@ define(["init","assets","animations"], \
 
         update: (elapsedTime) ->
             @mission.update(elapsedTime) if @mission?
-            @setX( @attrs.tile_x * 35 )
-            @setY( @attrs.tile_y * 35 )
+            @setX( @attrs.tile_x * @ship.attrs.tile_size + @ship.attrs.tile_offset.x ) 
+            @setY( @attrs.tile_y * @ship.attrs.tile_size + @ship.attrs.tile_offset.y )
             
 
         

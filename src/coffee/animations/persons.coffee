@@ -1,4 +1,4 @@
-define(["utils"], (Utils) ->
+define(["utils","assets"], (Utils,Assets) ->
     races = ["human","crystal","engi","energy","female","mantis","rock","slug"]
     
     # FIXME mantis animations differs from the others :/
@@ -29,6 +29,8 @@ define(["utils"], (Utils) ->
                     up:    (Utils.extend({x:(i+2*numFrames)*size.width,y:y},size) for i in range)
                     left:  (Utils.extend({x:(i+3*numFrames)*size.width,y:y},size) for i in range)
                 }
+
+            Assets.image('img/people/'+filename+'.png','persons')
 
             animations[color].standing = genDirections(0, animated = false)
             animations[color].walking = genDirections(0)

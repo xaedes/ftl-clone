@@ -6,15 +6,13 @@ requirejs.config({
     }
 })
 
-define(["init","person"], (init, Person) ->
-    #http://stackoverflow.com/questions/14530450/coffeescript-class/14536430#14536430
-
-    person = new Person(
-        race: "human"
+define(["init","person","assets"], (init, Person, Assets) ->
+    Assets.load("persons", () -> 
+        person = new Person(
+            layer: init.layer
+            race: "human"
+        )
+        init.stage.draw()
     )
-    init.layer.add(person) 
-
-    init.stage.draw()
-
 
 )

@@ -1,15 +1,15 @@
-define([], () ->
+define(["assets"], (Assets) ->
+
+    
+    
+
     ships = {}
     ships.kestral = {}
     ships.kestral.floor = 
-        x: 0
-        y: 0
-        image: "img/ship/kestral_floor.png"
+        image: Assets.image("img/ship/kestral_floor.png", "ships")
     
     ships.kestral.base = 
-        x: 0
-        y: 0
-        image: "img/ship/kestral_base.png"
+        image: Assets.image("img/ship/kestral_base.png", "ships")
     
     
     return ships

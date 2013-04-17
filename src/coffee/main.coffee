@@ -6,18 +6,25 @@ requirejs.config({
     }
 })
 
-define(["init","person","assets", "person_ki"], (init, Person, Assets, PersonKI) ->
-    Assets.load("persons", () -> 
+define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Assets, PersonKI) ->
+    Assets.load("persons ships", () -> 
         person = new Person(
-            layer: init.layer
+            layer: init.layers.persons
             race: "human"
             tile_x: 0
         )
 
-        person.mission = new PersonKI.SimpleTileMovement(person, 5,1)
+        ship = new Ship(
+            layer: init.layers.ships
+        )
+
+        person.mission = new PersonKI.SimpleTileMovement(person, 1,5)
 
         fps = 60
         lastTime = Date.now()
+
+        init.stage.draw()
+
         game_loop = ()->
             elapsedTime = Date.now() - lastTime
 
@@ -25,7 +32,7 @@ define(["init","person","assets", "person_ki"], (init, Person, Assets, PersonKI)
 
             lastTime = Date.now()
 
-            init.stage.draw()
+            # init.stage.draw()
         
         window.setInterval(game_loop,1000/fps)
     )

@@ -6,10 +6,13 @@ define([], () ->
             height: 600
         )
 
-        layer: new Kinetic.Layer()
+        layers:
+            ships: new Kinetic.Layer()
+            persons: new Kinetic.Layer()
     }
 
-    init.stage.add(init.layer)
+    init.stage.add(init.layers.ships)
+    init.stage.add(init.layers.persons)
 
     return init
 )

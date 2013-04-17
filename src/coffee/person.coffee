@@ -31,8 +31,8 @@ define(["init","assets","animations"], \
             @spriteContainer = @
             @sprite = 
                 color: "yellow"
-                action: "walking"
-                direction: "right"
+                action: "standing"
+                direction: "down"
                 update: () =>
                     @sprites[@sprite.color].attrs.animations = animations.persons[@attrs.race][@sprite.color][@sprite.action]
                     @sprites[@sprite.color].attrs.animation = @sprite.direction

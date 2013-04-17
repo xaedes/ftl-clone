@@ -1,4 +1,4 @@
-define([], () -> 
+define(["math"], (Math) -> 
     directions =
         "-1":
             "-1": "left"
@@ -13,18 +13,16 @@ define([], () ->
             "0": "right"
             "1": "right"
     KI={}
-    KI.SimpleTileMovement =
+    class SimpleTileMovement
         # Handles movement of a person
-        create: (person, x, y) ->
-            person.sprite.action = "walking"
-            person.sprite.update()
+        constructor: (@person, @x, @y) ->
+            @person.sprite.action = "walking"
+            @person.sprite.update()
             
-            return oCanvas.extend({person:person,x:x,y:y},KI.SimpleTileMovement)
-        
-        update: () ->
+        update: (elapsedTime) ->
             # calculate actual deltas
-            adx = @x - @person.tile_x
-            ady = @y - @person.tile_y
+            adx = @x - @person.attrs.tile_x
+            ady = @y - @person.attrs.tile_y
             
             if (adx == 0) and (ady == 0)
                 @finished()
@@ -34,11 +32,11 @@ define([], () ->
             ndx = Math.sign(adx)
             ndy = Math.sign(ady)
             # calculate deltas for movement
-            dx = Math.min(@person.tilespeed, Math.abs(adx) ) * ndx # go maximal the actual difference, not more
-            dy = Math.min(@person.tilespeed, Math.abs(ady) ) * ndy 
+            dx = Math.min(@person.attrs.tile_speed * elapsedTime, Math.abs(adx) ) * ndx # go maximal the actual difference, not more
+            dy = Math.min(@person.attrs.tile_speed * elapsedTime, Math.abs(ady) ) * ndy 
             # move
-            @person.tile_x += dx
-            @person.tile_y += dy
+            @person.attrs.tile_x += dx
+            @person.attrs.tile_y += dy
             
             # activate correct walking animation
             direction = directions[ndx][ndy]
@@ -49,18 +47,17 @@ define([], () ->
             @person.sprite.direction = "down"
             @person.sprite.action = "standing"
             @person.sprite.update()
-        
-    KI.RandomWalker =
+    KI.SimpleTileMovement = SimpleTileMovement
+    class RandomWalker
         # Lets a person randomly walk
-        create: (person) ->
-            return oCanvas.extend({person:person},KI.RandomWalker)
+        constructor: (@person) ->
         
         new_dest: () ->
             rx = (Math.random()*2-1)*2
             ry = (Math.random()*2-1)*2
             x = Math.round(Math.clip(@person.tile_x+rx,6,9))
             y = Math.round(Math.clip(@person.tile_y+ry,1,4))
-            @mission = KI.SimpleTileMovement.create(@person,x,y)
+            @mission = new KI.SimpleTileMovement(@person,x,y)
             @mission.finished = () =>
                 @mission.finished = () ->
                     return
@@ -68,11 +65,12 @@ define([], () ->
                     @new_dest()
                 ,Math.round(1000-250+500*Math.random()))
         
-        update: () ->
+        update: (elapsedTime) ->
             if not @mission?
                 @new_dest()
                 
-            @mission.update()
-    
+            @mission.update(elapsedTime)
+
+    KI.RandomWalker = RandomWalker
     return KI
 )

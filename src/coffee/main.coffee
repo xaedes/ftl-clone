@@ -20,11 +20,15 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
 
         person.mission = new PersonKI.SimpleTileMovement(person, 1,5)
 
-        fps = 60
-        lastTime = Date.now()
-
+        init.layers.background.add(new Kinetic.Rect(
+            width: init.stage.getWidth()
+            height: init.stage.getHeight()
+            fill: 'black'
+        ))
         init.stage.draw()
 
+        fps = 60
+        lastTime = Date.now()
         game_loop = ()->
             elapsedTime = Date.now() - lastTime
 

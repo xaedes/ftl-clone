@@ -7,10 +7,12 @@ define([], () ->
         )
 
         layers:
+            background: new Kinetic.Layer()
             ships: new Kinetic.Layer()
             persons: new Kinetic.Layer()
     }
 
+    init.stage.add(init.layers.background)
     init.stage.add(init.layers.ships)
     init.stage.add(init.layers.persons)
 

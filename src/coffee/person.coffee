@@ -1,7 +1,7 @@
 define(["init","assets","animations"], \
         (init, Assets, animations) ->
             
-    class Person extends Kinetic.Container
+    class Person extends Kinetic.Group
         constructor: (config) ->
             #http://stackoverflow.com/questions/14530450/coffeescript-class/14536430#14536430
             @attrs = 
@@ -9,7 +9,7 @@ define(["init","assets","animations"], \
                 tile_x: 0
                 tile_y: 0
                 tile_speed: 1/1000
-            Kinetic.Container.call(@, config) #Call super constructor
+            Kinetic.Group.call(@, config) #Call super constructor
 
             if @attrs.race not in animations.persons.races
                 console.log "Error. Unknown person type!"
@@ -50,14 +50,6 @@ define(["init","assets","animations"], \
                     @active_sprite.start()
 
             @sprite.update()
-
-            # @updater = new Kinetic.Animation(()=>
-            #     @update.call(@)
-            # ,@)
-            # @updater.start()
-            
-
-            init.stage.draw()
 
         setTileXY: (tx,ty) ->
             @x = tx * @ship.tile_size + @ship.tile_offset.x

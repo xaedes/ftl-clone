@@ -29,12 +29,14 @@ define(["init","assets","animations"], \
 
             @spriteContainer = @
             @sprite = 
-                color: "green"
+                color: "yellow"
                 action: "walking"
                 direction: "right"
                 update: () =>
                     @sprites[@sprite.color].attrs.animations = animations.persons[@attrs.race][@sprite.color][@sprite.action]
                     @sprites[@sprite.color].attrs.animation = @sprite.direction
+                    if(@sprites[@sprite.color].attrs.index >= @sprites[@sprite.color].attrs.animations[@sprite.direction].length)
+                        @sprites[@sprite.color].attrs.index = 0
 
                     if(@active_sprite == @sprites[@sprite.color])
                         return
@@ -45,6 +47,16 @@ define(["init","assets","animations"], \
                     @active_sprite = @sprites[@sprite.color]
                     @spriteContainer.add(@active_sprite)
                     @active_sprite.start()
+
+            if @attrs.selectable
+                @on("mouseenter",()->
+                    @sprite.color = "highlight"
+                    @sprite.update()
+                )
+                @on("mouseleave",()->
+                    @sprite.color = "yellow"
+                    @sprite.update()
+                )
 
         setTileXY: (tx,ty) ->
             @x = tx * @ship.tile_size + @ship.tile_offset.x

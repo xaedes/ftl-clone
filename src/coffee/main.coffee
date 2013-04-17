@@ -15,6 +15,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
             tile_y: 1
         )
 
+
         ship = new Ship(
             layer: init.layers.ships
             x: 100
@@ -23,7 +24,21 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
 
         ship.addPerson(person)
 
+
         person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
+
+
+        for i in [1..100]
+            new_person = new Person(
+                layer: init.layers.persons
+                race: "human"
+                tile_x: Math.round(Math.clip(Math.random()*(9-6)+6,6,9))
+                tile_y: Math.round(Math.clip(Math.random()*(4-1)+1,1,4))
+                selectable: false
+            )
+            new_person.mission = new PersonKI.RandomWalker(new_person)
+            ship.addPerson(new_person)
+
 
         init.layers.background.add(new Kinetic.Rect(
             width: init.stage.getWidth()
@@ -37,7 +52,8 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         game_loop = ()->
             elapsedTime = Date.now() - lastTime
 
-            person.update(elapsedTime)
+            ship.update(elapsedTime)
+
 
             lastTime = Date.now()
 

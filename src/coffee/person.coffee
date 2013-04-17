@@ -6,6 +6,7 @@ define(["init","assets","animations"], \
             #http://stackoverflow.com/questions/14530450/coffeescript-class/14536430#14536430
             @attrs = 
                 selectable: true
+                selected: false
                 tile_x: 0
                 tile_y: 0
                 tile_speed: 1/1000
@@ -50,11 +51,11 @@ define(["init","assets","animations"], \
 
             if @attrs.selectable
                 @on("mouseenter",()->
-                    @sprite.color = "highlight"
+                    @sprite.color = "highlight" if not @attrs.selected
                     @sprite.update()
                 )
                 @on("mouseleave",()->
-                    @sprite.color = "yellow"
+                    @sprite.color = "yellow" if not @attrs.selected
                     @sprite.update()
                 )
 

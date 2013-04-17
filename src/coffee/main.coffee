@@ -17,6 +17,8 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
 
         ship = new Ship(
             layer: init.layers.ships
+            x: 100
+            y: 75
         )
 
         ship.addPerson(person)

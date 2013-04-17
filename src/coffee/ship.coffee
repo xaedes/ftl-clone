@@ -62,14 +62,16 @@ define(["init","animations","assets"], (init,animations,Assets) ->
         # draw: () ->
         #     # update
         
-        # addPerson: (person) ->
-        #     person.ship = this
-        #     @addChild(person)
-        #     person.bind("click tap",(event) =>
-        #         if person.selectable
-        #             @selectPerson(person)
-        #         event.stopPropagation()
-        #     )
+        addPerson: (person) ->
+            person.ship = this
+            @add(person)
+            # person.bind("click tap",(event) =>
+            #     if person.selectable
+            #         @selectPerson(person)
+            #     event.stopPropagation()
+            # )
+            person.sprite.update()
+            
 
         update: (elapsedTime) ->
         

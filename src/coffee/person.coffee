@@ -15,9 +15,6 @@ define(["init","assets","animations"], \
                 console.log "Error. Unknown person type!"
                 return
 
-            @attrs.layer.add(@)
-
-
             @sprites = {}
             for color in animations.persons[@attrs.race].colors
                 @sprites[color] =  new Kinetic.Sprite(
@@ -49,8 +46,6 @@ define(["init","assets","animations"], \
                     @spriteContainer.add(@active_sprite)
                     @active_sprite.start()
 
-            @sprite.update()
-
         setTileXY: (tx,ty) ->
             @x = tx * @ship.tile_size + @ship.tile_offset.x
             @y = ty * @ship.tile_size + @ship.tile_offset.y
@@ -61,7 +56,6 @@ define(["init","assets","animations"], \
             @mission.update(elapsedTime) if @mission?
             @setX( @attrs.tile_x * 35 )
             @setY( @attrs.tile_y * 35 )
-           
             
 
         

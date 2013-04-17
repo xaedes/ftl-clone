@@ -18,6 +18,8 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
             layer: init.layers.ships
         )
 
+        ship.addPerson(person)
+
         person.mission = new PersonKI.SimpleTileMovement(person, 1,5)
 
         init.layers.background.add(new Kinetic.Rect(

@@ -55,8 +55,8 @@ define(["math"], (Math) ->
         new_dest: () ->
             rx = (Math.random()*2-1)*2
             ry = (Math.random()*2-1)*2
-            x = Math.round(Math.clip(@person.tile_x+rx,6,9))
-            y = Math.round(Math.clip(@person.tile_y+ry,1,4))
+            x = Math.round(Math.clip(@person.attrs.tile_x+rx,6,9))
+            y = Math.round(Math.clip(@person.attrs.tile_y+ry,1,4))
             @mission = new KI.SimpleTileMovement(@person,x,y)
             @mission.finished = () =>
                 @mission.finished = () ->

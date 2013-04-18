@@ -28,7 +28,9 @@ define(["init","assets","animations"], \
                     index: 0
                 )
 
-            @spriteContainer = @
+            @spriteContainer = new Kinetic.Group({})
+            @add(@spriteContainer)
+
             @sprite = 
                 color: "yellow"
                 action: "standing"
@@ -49,15 +51,27 @@ define(["init","assets","animations"], \
                     @spriteContainer.add(@active_sprite)
                     @active_sprite.start()
 
+
+            @selectionArea = new Kinetic.Rect(
+                width: 16
+                height: 16
+                x: (35-16)/2
+                y: (35-16)/2
+            )
+            @add(@selectionArea)
+            # @on = []
+            # @on = @selectionArea.on
             if @attrs.selectable
-                @on("mouseenter",()->
+                @selectionArea.on("mouseenter",()=>
                     @sprite.color = "highlight" if not @attrs.selected
                     @sprite.update()
                 )
-                @on("mouseleave",()->
+                @selectionArea.on("mouseleave",()=>
                     @sprite.color = "yellow" if not @attrs.selected
                     @sprite.update()
                 )
+
+
 
         setTileXY: (tx,ty) ->
             @x = tx * @ship.tile_size + @ship.tile_offset.x

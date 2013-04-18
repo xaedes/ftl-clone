@@ -35,7 +35,7 @@ define(["utils","assets"], (Utils,Assets) ->
 
             
 
-            anims[color].image = Assets.image('img/people/'+filename+'.png','persons')
+            anims[color].image = Assets.image('img/people/'+filename+'.png','persons.'+race)
             anims[color].standing = genDirections(0, false)
             anims[color].walking = genDirections(0)
             anims[color].extinguish_fire = genDirections(3*size.height)

@@ -7,7 +7,7 @@ requirejs.config({
 })
 
 define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Assets, PersonKI) ->
-    Assets.load("persons ships", () -> 
+    Assets.load("persons.human ships", () -> 
         person = new Person(
             layer: init.layers.persons
             race: "human"
@@ -28,7 +28,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
 
 
-        for i in [1..16]
+        for i in [1..40]
             new_person = new Person(
                 layer: init.layers.persons
                 race: "human"

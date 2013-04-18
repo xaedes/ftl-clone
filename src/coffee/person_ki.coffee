@@ -59,6 +59,8 @@ define(["math"], (Math) ->
             y = Math.round(Math.clip(@person.attrs.tile_y+ry,1,4))
             @mission = new KI.SimpleTileMovement(@person,x,y)
             @mission.finished = () =>
+                @person.sprite.action = "standing"
+                @person.sprite.update()
                 @mission.finished = () ->
                     return
                 window.setTimeout(()=>

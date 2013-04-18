@@ -52,22 +52,22 @@ define(["init","assets","animations"], \
                     @active_sprite.start()
 
 
-            @selectionArea = new Kinetic.Rect(
-                width: 16
-                height: 16
-                x: (35-16)/2
-                y: (35-16)/2
+            @selectionArea = new Kinetic.Circle(
+                radius: 16/2
+                x: 35/2-1
+                y: 35/2-1
             )
             @add(@selectionArea)
-            # @on = []
-            # @on = @selectionArea.on
+
             if @attrs.selectable
                 @selectionArea.on("mouseenter",()=>
                     @sprite.color = "highlight" if not @attrs.selected
+                    document.body.style.cursor = 'pointer'
                     @sprite.update()
                 )
                 @selectionArea.on("mouseleave",()=>
                     @sprite.color = "yellow" if not @attrs.selected
+                    document.body.style.cursor = 'default'
                     @sprite.update()
                 )
 

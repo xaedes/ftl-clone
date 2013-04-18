@@ -28,7 +28,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
 
 
-        for i in [1..100]
+        for i in [1..16]
             new_person = new Person(
                 layer: init.layers.persons
                 race: "human"

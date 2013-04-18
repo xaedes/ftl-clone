@@ -1,80 +1,95 @@
-define(["init","sprite_settings","container"], (init,sprites,Container) ->
-    Ship = 
-        init: () ->
-            switch @model
-                when "kestral" 
-                    @sprite_settings = sprites.ships.kestral
-                    @tile_offset = 
-                        x: 71
-                        y: 116
-                    @tile_size = 35 
-                else 
-                    console.log "Error. Unknown ship model!"
+define(["init","animations","assets","person_ki"], (init,animations,Assets,PersonKI) ->
+
+
+    class Ship extends Kinetic.Group
+        persons: []
+        constructor: (config) ->
+            @attrs = 
+                # sprite_settings = animations.ships.kestral
+                tile_offset: 
+                    x: 71
+                    y: 116
+                tile_size: 35 
+            Kinetic.Group.call(@, config) #Call super constructor
+            @attrs.layer.add(@)
             
-            floor = @core.display.image( @sprite_settings.floor )
-            base = @core.display.image( @sprite_settings.base )
+            floor = new Kinetic.Image( 
+                image: animations.ships.kestral.floor.image 
+            )
+            base = new Kinetic.Image( 
+                image: animations.ships.kestral.base.image
+            )
             
-            @background = init.canvas.display.container({})
-            @background.addChild(base)
-            @background.addChild(floor)
+            @background = new Kinetic.Group({})
+            @background.add(base)
+            @background.add(floor)
+
+            # @persons = new Kinetic.Group({})
+
             
-            @addChild(@background)
+            @add(@background)
+            # @add(@persons)
+
+
             
-            @bind("click tap",(event) => 
+            @on("click tap",(event) => 
                 event.stopPropagation()
                 if @selected_person?
                     switch event.which
                         when 1 # left click
                             @deselectPerson()
-                        when 2 # right click
-                            tile_pos = @calculateTileXY(event.x, event.y)
-                            @selected_person.moveToTileXY(tile_pos.x,tile_pos.y)
+                        when 3 # right click
+                            absPos = @getAbsolutePosition()
+                            tile_pos = @calculateTileXY(event.layerX - absPos.x, event.layerY - absPos.y)
+                            @selected_person.mission = new PersonKI.SimpleTileMovement(@selected_person,tile_pos.x,tile_pos.y)
+                            # moveToTileXY(tile_pos.x,tile_pos.y)
             )
         
         calculateTileXY: (x,y,precision=false) ->
             tile_pos = 
-                x: (x - @tile_offset.x) / @tile_size
-                y: (y - @tile_offset.y) / @tile_size
+                x: (x - @attrs.tile_offset.x) / @attrs.tile_size
+                y: (y - @attrs.tile_offset.y) / @attrs.tile_size
             if not precision
                 tile_pos.x = Math.floor(tile_pos.x)
                 tile_pos.y = Math.floor(tile_pos.y)
             return tile_pos
         
         selectPerson: (person) ->
-            if not person.selectable?
+            if not person.attrs.selectable?
                 return
             @deselectPerson()
             @selected_person = person
+            @selected_person.attrs.selected = true
             @selected_person.sprite.color = "green"
             @selected_person.sprite.update()
             
         deselectPerson: () ->
             if @selected_person?
-               @selected_person.sprite.color = "yellow"
-               @selected_person.sprite.update()
+                @selected_person.attrs.selected = false
+                @selected_person.sprite.color = "yellow"
+                @selected_person.sprite.update()
             @selected_person = null
             
-        draw: () ->
-            # update
+        # draw: () ->
+        #     # update
         
         addPerson: (person) ->
             person.ship = this
-            @addChild(person)
-            person.bind("click tap",(event) =>
-                if person.selectable
-                    @selectPerson(person)
-                event.stopPropagation()
+            @add(person)
+            person.on("click",(event) =>
+                switch event.which
+                    when 1 # left click
+                        if person.attrs.selectable
+                            @selectPerson(person)
+                            event.cancelBubble = true
             )
-        
-    
-    shipObjectWrapper = (settings, core) ->
-        settings.core = core
-        settings.shapeType = "rectangular"
-        oCanvas.extend({}, Ship, settings)
+            person.sprite.update()
+            @persons.push(person)
 
-    oCanvas.registerDisplayObject("ship", shipObjectWrapper, "init")
+        update: (elapsedTime) ->
+            for person in @persons
+                person.update(elapsedTime)
     
-    # Activate displayObject on init.canvas
-    init.canvas.display.ship = oCanvas.modules.display.ship.setCore(init.canvas)
+    return Ship
     
 )

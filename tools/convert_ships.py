@@ -16,7 +16,9 @@ assert len(sys.argv) >= 2
 # Reads all ships (as txt and xml) in current directory and stores them as json in specified output directory
 # Usage:
 # tools> cd data
-# data> python2 ../convert_ship.py ../../src/data/ships
+# data> python2 ../convert_ships.py ../../src/data/ships
+
+
 
 output_dir = normpath(sys.argv[1])
 

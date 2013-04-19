@@ -1,5 +1,3 @@
-tab2space:
-	find src/coffee/ -iname *.coffee -exec sed -i s/'\t'/'    '/g '{}' \;
 
 coffee:
 	coffee -m -o src/js/ -c src/coffee/
@@ -11,3 +9,14 @@ watch:
 
 server: coffee
 	python2 -m SimpleHTTPServer
+
+tab2space:
+	find src/coffee/ -iname *.coffee -exec sed -i s/'\t'/'    '/g '{}' \;
+
+extract_resources:
+	cd ftl-resources; \
+	python2 ../tools/extract.py
+
+extract_ships:
+	cd ftl-resources/data/; \
+	python2 ../../tools/convert_ships.py ../../src/data/ships

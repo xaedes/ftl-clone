@@ -8,5 +8,8 @@ define([], () ->
         x = Math.min(x,upper_bound)
         return x
 
+    Math.randomIntBounds = (lower_bound,upper_bound) ->
+    	return Math.round(Math.random()*(upper_bound-lower_bound)+lower_bound)
+
     return Math
 )

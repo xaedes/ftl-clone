@@ -32,8 +32,8 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
             new_person = new Person(
                 layer: init.layers.persons
                 race: "human"
-                tile_x: Math.round(Math.clip(Math.random()*(9-6)+6,6,9))
-                tile_y: Math.round(Math.clip(Math.random()*(4-1)+1,1,4))
+                tile_x: Math.randomIntBounds(6,9)
+                tile_y: Math.randomIntBounds(1,4)
                 selectable: false
             )
             new_person.mission = new PersonKI.RandomWalker(new_person)

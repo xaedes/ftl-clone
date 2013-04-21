@@ -1,40 +1,85 @@
-define([""], \
-        () ->
+define(["utils"], \
+        (utils) ->
+
+    handleBundle = (url, bundle) ->
+        if bundle == null
+            if not @all_assets[url].loaded
+                @all_assets[url].load()
+        else
+            # Ensure bundle exists
+            if (bundle not of @bundles)
+                @bundles[bundle] = {}
+
+            # Add image to bundle
+            @bundles[bundle][url] = @all_assets[url]
+
 
     Assets =
         bundles: {}
-        all_images: {}
+        all_assets: {}
         image: (url, bundle = null) -> 
             # usage:
             # image('img/...png') gets the image object, if it isn't loaded yet it will start to load
             # image('img/...png', 'bundleXY') gets the image object, if it isn't loaded yet, it will be added to bundleXY and loading need to be started explicitly
 
-            if (url not of @all_images)
-                @all_images[url] = new Image()
-                if bundle == null
-                    @all_images[url].src = url 
-                else
-                    if (bundle not of @bundles)
-                        @bundles[bundle] = {}
+            # If not already in all_assets, create it
+            if (url not of @all_assets)
+                # Create image
+                @all_assets[url] = new Image()
+                @all_assets[url].url = url
+                @all_assets[url].onload = () ->
+                    @loaded = true
+                @all_assets[url].load = () ->
+                    @src = @url
 
-                    @all_images[url].url = url # loading can be started by setting src to the value of url
-                    @bundles[bundle][url] = @all_images[url]
+                handleBundle.call(@, url, bundle)
 
-            return @all_images[url]
+            return @all_assets[url]
         
+        json: (url, bundle = null) ->
+            # usage:
+            # json('data/...json') gets the json object, if it isn't loaded yet it will start to load
+            # json('data/...json', 'bundleXY') gets the json object, if it isn't loaded yet, it will be added to bundleXY and loading need to be started explicitly
+
+            # If not already in all_assets, create it
+            if (url not of @all_assets)
+                # Create image
+                @all_assets[url] = {}
+                @all_assets[url].url = url
+                @all_assets[url].onload = () ->
+                    @loaded = true
+                @all_assets[url].load = () ->
+                    $.getJSON(@url)
+                    .done((data) =>
+                        utils.extend(@, data)
+                        @onload() if @onload?
+                    ).fail(() =>
+                        @onload() if @onload?
+                    )
+
+                handleBundle.call(@, url, bundle)
+
+            return @all_assets[url]
+
         load: (bundles, callback) ->
             bundles = bundles.split(' ')
 
             toLoad = 0
             for bundle in bundles
                 for prop of @bundles[bundle]
-                    if @bundles[bundle][prop].hasOwnProperty('url')
+                    if @bundles[bundle][prop].hasOwnProperty("load")
                         toLoad++
-                        @bundles[bundle][prop].src = @bundles[bundle][prop].url # start loading of this image
+                        @bundles[bundle][prop].load()
                         @bundles[bundle][prop].onload = () =>
+                            @loaded = true
                             toLoad--
                             if(toLoad == 0)
                                 callback() if callback?
+                    # else if @bundles[bundle][prop] 
+                        # ...
+                    
+                        # ...
+                    
 
 
     return Assets

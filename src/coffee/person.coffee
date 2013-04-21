@@ -74,15 +74,15 @@ define(["init","assets","animations"], \
 
 
         setTileXY: (tx,ty) ->
-            @x = tx * @ship.tile_size + @ship.tile_offset.x
-            @y = ty * @ship.tile_size + @ship.tile_offset.y
+            @x = tx * @ship.attrs.data.tile_size - @ship.attrs.data.tile_offset.x
+            @y = ty * @ship.attrs.data.tile_size - @ship.attrs.data.tile_offset.y
 
 
 
         update: (elapsedTime) ->
             @mission.update(elapsedTime) if @mission?
-            @setX( @attrs.tile_x * @ship.attrs.tile_size + @ship.attrs.tile_offset.x ) 
-            @setY( @attrs.tile_y * @ship.attrs.tile_size + @ship.attrs.tile_offset.y )
+            @setX( @attrs.tile_x * @ship.attrs.data.tile_size - @ship.attrs.data.tile_offset.x ) 
+            @setY( @attrs.tile_y * @ship.attrs.data.tile_size - @ship.attrs.data.tile_offset.y )
             
 
         

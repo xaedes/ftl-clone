@@ -7,7 +7,7 @@ requirejs.config({
 })
 
 define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Assets, PersonKI) ->
-    Assets.load("persons.human ships", () -> 
+    Assets.load("persons.human ships.kestral", () -> 
         person = new Person(
             layer: init.layers.persons
             race: "human"
@@ -28,7 +28,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
 
 
-        for i in [1..40]
+        for i in [1..10]
             new_person = new Person(
                 layer: init.layers.persons
                 race: "human"
@@ -47,7 +47,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         ))
         init.stage.draw()
 
-        fps = 60
+        fps = 100
         lastTime = Date.now()
         game_loop = ()->
             elapsedTime = Date.now() - lastTime

@@ -1,4 +1,4 @@
-define(["init","animations","assets","person_ki"], (init,animations,Assets,PersonKI) ->
+define(["init","animations","assets","person_ki","ship_data"], (init,animations,Assets,PersonKI,ship_data) ->
 
 
     class Ship extends Kinetic.Group
@@ -6,18 +6,19 @@ define(["init","animations","assets","person_ki"], (init,animations,Assets,Perso
         constructor: (config) ->
             @attrs = 
                 # sprite_settings = animations.ships.kestral
-                tile_offset: 
-                    x: 71
-                    y: 116
-                tile_size: 35 
+                ship: "kestral"
+
             Kinetic.Group.call(@, config) #Call super constructor
+
+            @attrs.data = ship_data[@attrs.ship]
+
             @attrs.layer.add(@)
             
             floor = new Kinetic.Image( 
-                image: animations.ships.kestral.floor.image 
+                image: animations.ships[@attrs.ship].floor.image 
             )
             base = new Kinetic.Image( 
-                image: animations.ships.kestral.base.image
+                image: animations.ships[@attrs.ship].base.image
             )
             
             @background = new Kinetic.Group({})
@@ -47,8 +48,8 @@ define(["init","animations","assets","person_ki"], (init,animations,Assets,Perso
         
         calculateTileXY: (x,y,precision=false) ->
             tile_pos = 
-                x: (x - @attrs.tile_offset.x) / @attrs.tile_size
-                y: (y - @attrs.tile_offset.y) / @attrs.tile_size
+                x: (x + @attrs.data.tile_offset.x) / @attrs.data.tile_size
+                y: (y + @attrs.data.tile_offset.y) / @attrs.data.tile_size
             if not precision
                 tile_pos.x = Math.floor(tile_pos.x)
                 tile_pos.y = Math.floor(tile_pos.y)
@@ -76,7 +77,7 @@ define(["init","animations","assets","person_ki"], (init,animations,Assets,Perso
         addPerson: (person) ->
             person.ship = this
             @add(person)
-            person.on("click",(event) =>
+            person.selectionArea.on("click",(event) =>
                 switch event.which
                     when 1 # left click
                         if person.attrs.selectable

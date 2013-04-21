@@ -49,8 +49,8 @@ def readXML(filename,data):
         soup  = BeautifulSoup(file)
         
         data["tile_offset"] = {}
-        data["tile_offset"]["x"] = soup.img.attrs["x"]
-        data["tile_offset"]["y"] = soup.img.attrs["y"]
+        data["tile_offset"]["x"] = int(soup.img.attrs["x"])
+        data["tile_offset"]["y"] = int(soup.img.attrs["y"])
 
     return data
 

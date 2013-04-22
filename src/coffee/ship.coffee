@@ -46,7 +46,8 @@ define(["init","animations","assets","person_ki","ship_data"]
                         when 3 # right click
                             absPos = @getAbsolutePosition()
                             tile_pos = @calculateTileXY(event.layerX - absPos.x, event.layerY - absPos.y)
-                            @selected_person.mission = new PersonKI.SimpleTileMovement(@selected_person,tile_pos.x,tile_pos.y)
+                            if @tiles[tile_pos.x][tile_pos.y].room_id?
+                                @selected_person.mission = new PersonKI.SimpleTileMovement(@selected_person,tile_pos.x,tile_pos.y)
                             # moveToTileXY(tile_pos.x,tile_pos.y)
             )
         

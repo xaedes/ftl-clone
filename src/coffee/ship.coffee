@@ -6,7 +6,6 @@ define(["init","animations","assets","person_ki","ship_data"]
         persons: []
         constructor: (config) ->
             @attrs = 
-                # sprite_settings = animations.ships.kestral
                 ship: "kestral"
 
             Kinetic.Group.call(@, config) #Call super constructor
@@ -29,11 +28,9 @@ define(["init","animations","assets","person_ki","ship_data"]
             @background.add(base)
             @background.add(floor)
 
-            # @persons = new Kinetic.Group({})
 
             
             @add(@background)
-            # @add(@persons)
 
 
             
@@ -48,7 +45,6 @@ define(["init","animations","assets","person_ki","ship_data"]
                             tile_pos = @calculateTileXY(event.layerX - absPos.x, event.layerY - absPos.y)
                             if @tiles[tile_pos.x][tile_pos.y].room_id?
                                 @selected_person.mission = new PersonKI.SimpleTileMovement(@selected_person,tile_pos.x,tile_pos.y)
-                            # moveToTileXY(tile_pos.x,tile_pos.y)
             )
         
         initRooms: () ->
@@ -94,9 +90,6 @@ define(["init","animations","assets","person_ki","ship_data"]
                 @selected_person.sprite.update()
             @selected_person = null
             
-        # draw: () ->
-        #     # update
-        
         addPerson: (person) ->
             person.ship = this
             @add(person)

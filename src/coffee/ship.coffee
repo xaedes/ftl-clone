@@ -10,7 +10,7 @@ define(["init","animations","assets","person_ki","ship_data"], (init,animations,
 
             Kinetic.Group.call(@, config) #Call super constructor
 
-            @attrs.data = ship_data[@attrs.ship]
+            @data = ship_data[@attrs.ship]
 
             @attrs.layer.add(@)
             
@@ -48,8 +48,8 @@ define(["init","animations","assets","person_ki","ship_data"], (init,animations,
         
         calculateTileXY: (x,y,precision=false) ->
             tile_pos = 
-                x: (x + @attrs.data.tile_offset.x) / @attrs.data.tile_size
-                y: (y + @attrs.data.tile_offset.y) / @attrs.data.tile_size
+                x: (x + @data.tile_offset.x) / @data.tile_size
+                y: (y + @data.tile_offset.y) / @data.tile_size
             if not precision
                 tile_pos.x = Math.floor(tile_pos.x)
                 tile_pos.y = Math.floor(tile_pos.y)

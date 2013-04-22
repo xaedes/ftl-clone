@@ -1,4 +1,5 @@
-define(["init","animations","assets","person_ki","ship_data"], (init,animations,Assets,PersonKI,ship_data) ->
+define(["init","animations","assets","person_ki","ship_data"]
+      ,(init,animations,Assets,PersonKI,ship_data) ->
 
 
     class Ship extends Kinetic.Group
@@ -10,7 +11,10 @@ define(["init","animations","assets","person_ki","ship_data"], (init,animations,
 
             Kinetic.Group.call(@, config) #Call super constructor
 
+            # Put ship data in @
             @data = ship_data[@attrs.ship]
+
+            @initRooms()
 
             @attrs.layer.add(@)
             
@@ -46,6 +50,24 @@ define(["init","animations","assets","person_ki","ship_data"], (init,animations,
                             # moveToTileXY(tile_pos.x,tile_pos.y)
             )
         
+        initRooms: () ->
+            maxW = 0
+            maxH = 0
+            for room in @data.rooms
+                maxW = Math.max(maxW,room.x+room.w)
+                maxH = Math.max(maxH,room.y+room.h)
+            @tiles = new Array(maxW)
+            for x in [0..maxW-1]
+                @tiles[x] = new Array(maxH-1)
+                for y in [0..maxH-1]
+                    @tiles[x][y] = {}
+
+            for room in @data.rooms
+                for x in [0..room.w-1]
+                    for y in [0..room.h-1]
+                        @tiles[x+room.x][y+room.y].room_id = room.id
+
+
         calculateTileXY: (x,y,precision=false) ->
             tile_pos = 
                 x: (x + @data.tile_offset.x) / @data.tile_size

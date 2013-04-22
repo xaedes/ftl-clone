@@ -3,6 +3,8 @@ src/js/*.js
 src/js/*.map
 src/js/sprite_settings/*.js
 src/js/sprite_settings/*.map
+src/js/animations/*.js
+src/js/animations/*.map
 
 src/img
 /ftl-resources/

@@ -29,16 +29,16 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
 
 
-        for i in [1..10]
-            new_person = new Person(
-                layer: init.layers.persons
-                race: "human"
-                tile_x: Math.randomIntBounds(6,9)
-                tile_y: Math.randomIntBounds(1,4)
-                selectable: false
-            )
-            new_person.mission = new PersonKI.RandomWalker(new_person)
-            ship.addPerson(new_person)
+        # for i in [1..10]
+        #     new_person = new Person(
+        #         layer: init.layers.persons
+        #         race: "human"
+        #         tile_x: Math.randomIntBounds(6,9)
+        #         tile_y: Math.randomIntBounds(1,4)
+        #         selectable: false
+        #     )
+        #     new_person.mission = new PersonKI.RandomWalker(new_person)
+        #     ship.addPerson(new_person)
 
 
         init.layers.background.add(new Kinetic.Rect(

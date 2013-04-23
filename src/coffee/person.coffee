@@ -9,7 +9,7 @@ define(["init","assets","animations"], \
                 selected: false
                 tile_x: 0
                 tile_y: 0
-                tile_speed: 1/1000
+                tile_speed: 2/1000
             Kinetic.Group.call(@, config) #Call super constructor
 
             if @attrs.race not in animations.persons.races
@@ -24,7 +24,7 @@ define(["init","assets","animations"], \
                     image: animations.persons[@attrs.race][color].image
                     animation: 'right'
                     animations: animations.persons[@attrs.race].yellow.walking
-                    frameRate: 4
+                    frameRate: 16
                     index: 0
                 )
 

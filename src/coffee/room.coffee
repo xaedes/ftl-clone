@@ -19,6 +19,12 @@ define([],()->
                 fill: "#E4E2D8"
             )
             @add(bg)
+            
+            @backgroundGridGroup = new Kinetic.Group({})
+            @wallGroup = new Kinetic.Group({})
+            
+            @add(@backgroundGridGroup)
+            @add(@wallGroup)
 
             @addLines()
 
@@ -30,6 +36,7 @@ define([],()->
             boundaryStrokeWidth = 2
             boundaryDoorStrokeWidth = 4
             backgroundGridStrokeWidth = 1
+            doorWallLength = 4
             # draw lines
             for x in [0..@data.w-1]
                 # vertical background grid lines
@@ -39,36 +46,47 @@ define([],()->
                         stroke: "#C6C4C0"
                         strokeWidth: backgroundGridStrokeWidth
                     )
-                    @add(line)
+                    @backgroundGridGroup.add(line)
 
                 # horizontal boundaries
                 for where in [{open:"up",y:0},{open:"down",y:1}]
+                    y = where.y*@data.h*@ship.data.tile_size
                     if where.open not in @ship.tiles[x+@data.x][@data.y+where.y*(@data.h-1)].open
-                        # closed boundary
-
-                        line = new Kinetic.Line(
-                            points: [[x*@ship.data.tile_size,where.y*@data.h*@ship.data.tile_size],[(x+1)*@ship.data.tile_size,where.y*@data.h*@ship.data.tile_size]]
-                            stroke: "black"
-                            strokeWidth: boundaryStrokeWidth
-                            lineCap: "square"
+                        if (
+                            ((where.y == 0) and (@data.y == 0 or not @ship.tiles[@data.x+x][@data.y-1].room_id?)) or
+                            ((where.y != 0) and (@data.y+@data.h-1 == @ship.tiles.h - 1 or not @ship.tiles[@data.x+x][@data.y+@data.h].room_id?))
                         )
-                        @add(line)
+                            # neighboring tile has no room
+                            strokeWidth = boundaryStrokeWidth
+                            lineCap = "square"
+                        else
+                            strokeWidth = boundaryDoorStrokeWidth
+                            lineCap = "butt"
+                            
+                        # closed boundary
+                        line = new Kinetic.Line(
+                            points: [[x*@ship.data.tile_size,y],[(x+1)*@ship.data.tile_size,y]]
+                            stroke: "black"
+                            strokeWidth: strokeWidth
+                            lineCap: lineCap
+                        )
+                        @wallGroup.add(line)
                     else
                         # door
                         line = new Kinetic.Line(
-                            points: [[x*@ship.data.tile_size,where.y*@data.h*@ship.data.tile_size],[2+x*@ship.data.tile_size,where.y*@data.h*@ship.data.tile_size]]
+                            points: [[x*@ship.data.tile_size,y],[doorWallLength+x*@ship.data.tile_size,y]]
                             stroke: "black"
                             strokeWidth: boundaryDoorStrokeWidth
-                            lineCap: "square"
+                            lineCap: "butt"
                         )
-                        @add(line)
+                        @wallGroup.add(line)
                         line = new Kinetic.Line(
-                            points: [[(x+1)*@ship.data.tile_size,where.y*@data.h*@ship.data.tile_size],[-2+(x+1)*@ship.data.tile_size,where.y*@data.h*@ship.data.tile_size]]
+                            points: [[(x+1)*@ship.data.tile_size,y],[-doorWallLength+(x+1)*@ship.data.tile_size,y]]
                             stroke: "black"
                             strokeWidth: boundaryDoorStrokeWidth
-                            lineCap: "square"
+                            lineCap: "butt"
                         )
-                        @add(line)
+                        @wallGroup.add(line)
 
 
             for y in [0..@data.h-1]
@@ -79,35 +97,46 @@ define([],()->
                         stroke: "#C6C4C0"
                         strokeWidth: backgroundGridStrokeWidth
                     )
-                    @add(line)
+                    @backgroundGridGroup.add(line)
 
                 # vertical boundaries
                 for where in [{open:"left",x:0},{open:"right",x:1}]
+                    x = where.x*@data.w*@ship.data.tile_size
                     if where.open not in @ship.tiles[@data.x+where.x*(@data.w-1)][@data.y+y].open
-                        # closed boundary
-                        line = new Kinetic.Line(
-                            points: [[where.x*@data.w*@ship.data.tile_size,y*@ship.data.tile_size],[where.x*@data.w*@ship.data.tile_size,(y+1)*@ship.data.tile_size]]
-                            stroke: "black"
-                            strokeWidth: boundaryStrokeWidth
-                            lineCap: "square"
+                        if (
+                            ((where.x == 0) and (@data.x == 0 or not @ship.tiles[@data.x-1][@data.y+y].room_id?) ) or
+                            ((where.x != 0) and (@data.x+@data.w-1 == @ship.tiles.w - 1 or not @ship.tiles[@data.x+@data.w][@data.y+y].room_id?))
                         )
-                        @add(line)
+                            # neighboring tile has no room
+                            strokeWidth = boundaryStrokeWidth
+                            lineCap = "square"
+                        else
+                            strokeWidth = boundaryDoorStrokeWidth
+                            lineCap = "butt"
+
+                        line = new Kinetic.Line(
+                            points: [[x,y*@ship.data.tile_size],[x,(y+1)*@ship.data.tile_size]]
+                            stroke: "black"
+                            strokeWidth: strokeWidth
+                            lineCap: lineCap
+                        )
+                        @wallGroup.add(line)
                     else
                         # door
                         line = new Kinetic.Line(
-                            points: [[where.x*@data.w*@ship.data.tile_size,y*@ship.data.tile_size],[where.x*@data.w*@ship.data.tile_size,2+y*@ship.data.tile_size]]
+                            points: [[x,y*@ship.data.tile_size],[x,doorWallLength+y*@ship.data.tile_size]]
                             stroke: "black"
                             strokeWidth: boundaryDoorStrokeWidth
-                            lineCap: "square"
+                            lineCap: "butt"
                         )
-                        @add(line)
+                        @wallGroup.add(line)
                         line = new Kinetic.Line(
-                            points: [[where.x*@data.w*@ship.data.tile_size,(y+1)*@ship.data.tile_size],[where.x*@data.w*@ship.data.tile_size,-2+(y+1)*@ship.data.tile_size]]
+                            points: [[x,(y+1)*@ship.data.tile_size],[x,-doorWallLength+(y+1)*@ship.data.tile_size]]
                             stroke: "black"
                             strokeWidth: boundaryDoorStrokeWidth
-                            lineCap: "square"
+                            lineCap: "butt"
                         )
-                        @add(line)
+                        @wallGroup.add(line)
 
 
 

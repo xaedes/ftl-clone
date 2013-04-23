@@ -44,7 +44,7 @@ define(["init","animations","assets","person_ki","ship_data"]
                             absPos = @getAbsolutePosition()
                             tile_pos = @calculateTileXY(event.layerX - absPos.x, event.layerY - absPos.y)
                             if @tiles[tile_pos.x][tile_pos.y].room_id?
-                                @selected_person.mission = new PersonKI.SimpleTileMovement(@selected_person,tile_pos.x,tile_pos.y)
+                                @selected_person.mission = new PersonKI.TileMovement(@selected_person,tile_pos.x,tile_pos.y)
             )
         
         initRooms: () ->
@@ -54,6 +54,8 @@ define(["init","animations","assets","person_ki","ship_data"]
                 maxW = Math.max(maxW,room.x+room.w)
                 maxH = Math.max(maxH,room.y+room.h)
             @tiles = new Array(maxW)
+            @tiles.w = maxW
+            @tiles.h = maxH
             for x in [0..maxW-1]
                 @tiles[x] = new Array(maxH-1)
                 for y in [0..maxH-1]
@@ -63,6 +65,23 @@ define(["init","animations","assets","person_ki","ship_data"]
                 for x in [0..room.w-1]
                     for y in [0..room.h-1]
                         @tiles[x+room.x][y+room.y].room_id = room.id
+
+        getWalkableNeighbors: (x,y) ->
+            # gets a list of tile positions that can be reached from (x,y) in one walking step
+            neighbors = []
+            for dx in [-1..1]
+                if (x+dx >= 0) and (x+dx < @tiles.w)
+                    for dy in [-1..1]
+                        if (y+dy >= 0) and (y+dy < @tiles.h)
+                            if dx == dy and dx == 0
+                                continue
+                            if @tiles[x+dx][y+dy].room_id?
+                                if (dx * dy == 0) # horizontal or vertical 
+                                    neighbors.push({x:dx+x,y:dy+y})
+                                else if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # diagonal only allowed in same room
+                                    neighbors.push({x:dx+x,y:dy+y})
+
+            return neighbors
 
 
         calculateTileXY: (x,y,precision=false) ->

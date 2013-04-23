@@ -7,7 +7,7 @@ requirejs.config({
 })
 
 define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Assets, PersonKI) ->
-    Assets.load("persons.human ships.kestral", () -> 
+    Assets.load("persons.human ships.kestral doors", () -> 
         person = new Person(
             layer: init.layers.persons
             race: "human"
@@ -18,6 +18,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
 
         ship = new Ship(
             layer: init.layers.ships
+            ship: "kestral"
             x: 100
             y: 75
         )

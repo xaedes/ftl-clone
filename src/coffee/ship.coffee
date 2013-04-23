@@ -1,5 +1,5 @@
-define(["init","animations","assets","person_ki","ship_data"]
-      ,(init,animations,Assets,PersonKI,ship_data) ->
+define(["init","animations","assets","person_ki","ship_data", "door"]
+      ,(init,animations,Assets,PersonKI,ship_data,Door) ->
 
 
     class Ship extends Kinetic.Group
@@ -15,6 +15,7 @@ define(["init","animations","assets","person_ki","ship_data"]
 
             @initRooms()
 
+
             @attrs.layer.add(@)
             
             floor = new Kinetic.Image( 
@@ -24,15 +25,20 @@ define(["init","animations","assets","person_ki","ship_data"]
                 image: animations.ships[@attrs.ship].base.image
             )
             
-            @background = new Kinetic.Group({})
-            @background.add(base)
-            @background.add(floor)
+            @backgroundGroup = new Kinetic.Group({})
+            @backgroundGroup.add(base)
+            @backgroundGroup.add(floor)
 
+            @doorsGroup = new Kinetic.Group({})
+
+            @personsGroup = new Kinetic.Group({})
 
             
-            @add(@background)
+            @add(@backgroundGroup)
+            @add(@doorsGroup)
+            @add(@personsGroup)
 
-
+            @initDoors()
             
             @on("click tap",(event) => 
                 event.stopPropagation()
@@ -65,6 +71,16 @@ define(["init","animations","assets","person_ki","ship_data"]
                 for x in [0..room.w-1]
                     for y in [0..room.h-1]
                         @tiles[x+room.x][y+room.y].room_id = room.id
+
+        initDoors: () ->
+            @doors = []
+            for doorData in @data.doors
+                door = new Door
+                    ship: @
+                    data: doorData
+
+                @doorsGroup.add(door)
+
 
         getWalkableNeighbors: (x,y) ->
             # gets a list of tile positions that can be reached from (x,y) in one walking step
@@ -111,7 +127,7 @@ define(["init","animations","assets","person_ki","ship_data"]
             
         addPerson: (person) ->
             person.ship = this
-            @add(person)
+            @personsGroup.add(person)
             person.selectionArea.on("click",(event) =>
                 switch event.which
                     when 1 # left click

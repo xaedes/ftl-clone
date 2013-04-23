@@ -1,5 +1,8 @@
 define(["assets"], (Assets) ->
-	ship_data = 
-		kestral: Assets.json("data/ships/kestral.json", "ships.kestral")
-		kestral_2: Assets.json("data/ships/kestral_2.json", "ships.kestral_2")
+	ships = ["kestral","kestral_2","boss_1"]
+	ship_data = {}
+	for ship in ships
+		ship_data[ship] = Assets.json("data/ships/"+ship+".json", "ships."+ship)
+
+	return ship_data
 )

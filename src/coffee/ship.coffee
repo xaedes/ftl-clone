@@ -17,16 +17,17 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room"]
 
             @attrs.layer.add(@)
             
-            floor = new Kinetic.Image( 
-                image: animations.ships[@attrs.ship].floor.image 
-            )
+            if animations.ships[@attrs.ship].floor?
+                floor = new Kinetic.Image( 
+                    image: animations.ships[@attrs.ship].floor.image 
+                )
             base = new Kinetic.Image( 
                 image: animations.ships[@attrs.ship].base.image
             )
             
             @backgroundGroup = new Kinetic.Group({})
             @backgroundGroup.add(base)
-            @backgroundGroup.add(floor)
+            @backgroundGroup.add(floor) if floor?
 
             @doorsGroup = new Kinetic.Group({})
 

@@ -150,22 +150,23 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             @reversePath = AStar(@person,@x,@y)
 
         next_step: () ->
-            @current = @reversePath.pop()
-            @mission = new KI.SimpleTileMovement(@person,@current.x,@current.y)
-            if @reversePath.length > 0
-                @mission.finished = () =>
-                    @next_step()
-            else
-                @finished = @mission.finished
-                @mission.finished = () =>
+            if @reversePath.length
+                @current = @reversePath.pop()
+                @mission = new KI.SimpleTileMovement(@person,@current.x,@current.y)
+                if @reversePath.length > 0
+                    @mission.finished = () =>
+                        @next_step()
+                else
                     @finished()
+            else
+                @finished()
 
         update: (elapsedTime) ->
             # calculate actual deltas
             if not @mission?
                 @next_step()
 
-            @mission.update(elapsedTime)
+            @mission.update(elapsedTime) if @mission?
         
         finished: () ->
             
@@ -181,7 +182,7 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             ry = (Math.random()*2-1)*2
             x = Math.round(Math.clip(@person.attrs.tile_x+rx,6,9))
             y = Math.round(Math.clip(@person.attrs.tile_y+ry,1,4))
-            @mission = new KI.SimpleTileMovement(@person,x,y)
+            @mission = new KI.TileMovement(@person,x,y)
             @mission.finished = () =>
                 @person.sprite.action = "standing"
                 @person.sprite.update()

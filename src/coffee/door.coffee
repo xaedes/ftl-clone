@@ -23,10 +23,10 @@ define(["animations/doors"],(animations)->
 
             @setOffset(halfTile,halfTile)
 
-            if @data.direction == 0
+            if @data.direction == 0 # up
             	@setRotationDeg(90)
             	@move(+halfTile,0)
-            else
+            else # left
             	@move(0,+halfTile)
 
             @add(sprite)

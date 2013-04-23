@@ -59,13 +59,18 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
             for room in @data.rooms
                 maxW = Math.max(maxW,room.x+room.w)
                 maxH = Math.max(maxH,room.y+room.h)
+            for door in @data.doors
+                maxW = Math.max(maxW,door.x+1)
+                maxH = Math.max(maxH,door.y+1)
+
             @tiles = new Array(maxW)
             @tiles.w = maxW
             @tiles.h = maxH
             for x in [0..maxW-1]
                 @tiles[x] = new Array(maxH-1)
                 for y in [0..maxH-1]
-                    @tiles[x][y] = {}
+                    @tiles[x][y] = 
+                        reachable_rooms: []
 
             for room in @data.rooms
                 for x in [0..room.w-1]
@@ -78,6 +83,20 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                 door = new Door
                     ship: @
                     data: doorData
+
+                # set reachability of rooms
+                if doorData.direction == 0 # up
+                    @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
+                    @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id1)
+                    if doorData.y-1 >= 0
+                        @tiles[doorData.x][doorData.y-1].reachable_rooms = @tiles[doorData.x][doorData.y-1].reachable_rooms || []
+                        @tiles[doorData.x][doorData.y-1].reachable_rooms.push(doorData.id2)
+                else # left
+                    @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
+                    @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id2)
+                    if doorData.x-1 >= 0
+                        @tiles[doorData.x-1][doorData.y].reachable_rooms = @tiles[doorData.x-1][doorData.y].reachable_rooms || []
+                        @tiles[doorData.x-1][doorData.y].reachable_rooms.push(doorData.id1)
 
                 @doorsGroup.add(door)
 
@@ -93,7 +112,10 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                                 continue
                             if @tiles[x+dx][y+dy].room_id?
                                 if (dx * dy == 0) # horizontal or vertical 
-                                    neighbors.push({x:dx+x,y:dy+y})
+                                    if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # in same room without door allowed
+                                        neighbors.push({x:dx+x,y:dy+y})
+                                    else if (@tiles[x+dx][y+dy].room_id in @tiles[x][y].reachable_rooms) or (@tiles[x][y].room_id in @tiles[x+dx][y+dy].reachable_rooms)
+                                        neighbors.push({x:dx+x,y:dy+y})
                                 else if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # diagonal only allowed in same room
                                     neighbors.push({x:dx+x,y:dy+y})
 

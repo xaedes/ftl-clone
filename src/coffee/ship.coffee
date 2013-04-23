@@ -49,8 +49,9 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                         when 3 # right click
                             absPos = @getAbsolutePosition()
                             tile_pos = @calculateTileXY(event.layerX - absPos.x, event.layerY - absPos.y)
-                            if @tiles[tile_pos.x][tile_pos.y].room_id?
-                                @selected_person.mission = new PersonKI.TileMovement(@selected_person,tile_pos.x,tile_pos.y)
+                            if (tile_pos.x >= 0) and (tile_pos.y >= 0) and (tile_pos.x < @tiles.w) and (tile_pos.y < @tiles.h)
+                                if @tiles[tile_pos.x][tile_pos.y].room_id?
+                                    @selected_person.mission = new PersonKI.TileMovement(@selected_person,tile_pos.x,tile_pos.y)
             )
         
         initRooms: () ->
@@ -80,23 +81,29 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
         initDoors: () ->
             @doors = []
             for doorData in @data.doors
-                door = new Door
-                    ship: @
-                    data: doorData
-
                 # set reachability of rooms
+                if @tiles[doorData.x][doorData.y].room_id == doorData.id1
+                    # sometimes the ids are swapped
+                    # make sure id1 contains the room that is reachable from @tiles[doorData.x][doorData.y]
+                    tmp = doorData.id1
+                    doorData.id1 = doorData.id2
+                    doorData.id2 = tmp
+
+                @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
+                @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id1)
                 if doorData.direction == 0 # up
-                    @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
-                    @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id1)
                     if doorData.y-1 >= 0
                         @tiles[doorData.x][doorData.y-1].reachable_rooms = @tiles[doorData.x][doorData.y-1].reachable_rooms || []
                         @tiles[doorData.x][doorData.y-1].reachable_rooms.push(doorData.id2)
                 else # left
-                    @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
-                    @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id2)
                     if doorData.x-1 >= 0
                         @tiles[doorData.x-1][doorData.y].reachable_rooms = @tiles[doorData.x-1][doorData.y].reachable_rooms || []
-                        @tiles[doorData.x-1][doorData.y].reachable_rooms.push(doorData.id1)
+                        @tiles[doorData.x-1][doorData.y].reachable_rooms.push(doorData.id2)
+
+                # create door object
+                door = new Door
+                    ship: @
+                    data: doorData
 
                 @doorsGroup.add(door)
 

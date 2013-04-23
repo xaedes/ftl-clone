@@ -5,8 +5,11 @@ src/js/sprite_settings/*.js
 src/js/sprite_settings/*.map
 src/js/animations/*.js
 src/js/animations/*.map
+src/js/datastructures/*.js
+src/js/datastructures/*.map
 
 src/img
+src/data
 /ftl-resources/
 /.directory
 /.directory.lock

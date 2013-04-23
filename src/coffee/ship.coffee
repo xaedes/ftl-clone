@@ -1,5 +1,5 @@
-define(["init","animations","assets","person_ki","ship_data", "door"]
-      ,(init,animations,Assets,PersonKI,ship_data,Door) ->
+define(["init","animations","assets","person_ki","ship_data", "door", "room"]
+      ,(init,animations,Assets,PersonKI,ship_data,Door, Room) ->
 
 
     class Ship extends Kinetic.Group
@@ -13,7 +13,6 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
             # Put ship data in @
             @data = ship_data[@attrs.ship]
 
-            @initRooms()
 
 
             @attrs.layer.add(@)
@@ -31,14 +30,17 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
 
             @doorsGroup = new Kinetic.Group({})
 
+            @roomsGroup = new Kinetic.Group({})
+
             @personsGroup = new Kinetic.Group({})
 
             
             @add(@backgroundGroup)
+            @add(@roomsGroup)
             @add(@doorsGroup)
             @add(@personsGroup)
 
-            @initDoors()
+            @initRoomsAndDoors()
             
             @on("click tap",(event) => 
                 event.stopPropagation()
@@ -54,7 +56,7 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                                     @selected_person.mission = new PersonKI.TileMovement(@selected_person,tile_pos.x,tile_pos.y)
             )
         
-        initRooms: () ->
+        initRoomsAndDoors: () ->
             maxW = 0
             maxH = 0
             for room in @data.rooms
@@ -64,6 +66,7 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                 maxW = Math.max(maxW,door.x+1)
                 maxH = Math.max(maxH,door.y+1)
 
+            # Initialize tiles
             @tiles = new Array(maxW)
             @tiles.w = maxW
             @tiles.h = maxH
@@ -72,16 +75,18 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                 for y in [0..maxH-1]
                     @tiles[x][y] = 
                         reachable_rooms: []
+                        open: []
 
-            for room in @data.rooms
-                for x in [0..room.w-1]
-                    for y in [0..room.h-1]
-                        @tiles[x+room.x][y+room.y].room_id = room.id
+            # Set room assignments
+            for roomData in @data.rooms
+                for x in [0..roomData.w-1]
+                    for y in [0..roomData.h-1]
+                        @tiles[x+roomData.x][y+roomData.y].room_id = roomData.id
 
-        initDoors: () ->
+
+            # Set reachability of rooms via doors
             @doors = []
             for doorData in @data.doors
-                # set reachability of rooms
                 if @tiles[doorData.x][doorData.y].room_id == doorData.id1
                     # sometimes the ids are swapped
                     # make sure id1 contains the room that is reachable from @tiles[doorData.x][doorData.y]
@@ -92,20 +97,35 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                 @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
                 @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id1)
                 if doorData.direction == 0 # up
+                    @tiles[doorData.x][doorData.y].open.push("up")
                     if doorData.y-1 >= 0
+                        @tiles[doorData.x][doorData.y-1].open.push("down")
                         @tiles[doorData.x][doorData.y-1].reachable_rooms = @tiles[doorData.x][doorData.y-1].reachable_rooms || []
                         @tiles[doorData.x][doorData.y-1].reachable_rooms.push(doorData.id2)
                 else # left
+                    @tiles[doorData.x][doorData.y].open.push("left")
                     if doorData.x-1 >= 0
+                        @tiles[doorData.x-1][doorData.y].open.push("right")
                         @tiles[doorData.x-1][doorData.y].reachable_rooms = @tiles[doorData.x-1][doorData.y].reachable_rooms || []
                         @tiles[doorData.x-1][doorData.y].reachable_rooms.push(doorData.id2)
 
-                # create door object
+
+            # Create door objects
+            for doorData in @data.doors
                 door = new Door
                     ship: @
                     data: doorData
 
                 @doorsGroup.add(door)
+
+            # Create room objects
+            for roomData in @data.rooms
+                room = new Room(
+                    data: roomData
+                    ship: @
+                )
+                @roomsGroup.add(room)
+
 
 
         getWalkableNeighbors: (x,y) ->
@@ -123,8 +143,8 @@ define(["init","animations","assets","person_ki","ship_data", "door"]
                                         neighbors.push({x:dx+x,y:dy+y})
                                     else if (@tiles[x+dx][y+dy].room_id in @tiles[x][y].reachable_rooms) or (@tiles[x][y].room_id in @tiles[x+dx][y+dy].reachable_rooms)
                                         neighbors.push({x:dx+x,y:dy+y})
-                                else if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # diagonal only allowed in same room
-                                    neighbors.push({x:dx+x,y:dy+y})
+                                # else if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # diagonal only allowed in same room
+                                    # neighbors.push({x:dx+x,y:dy+y})
 
             return neighbors
 

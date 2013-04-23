@@ -149,9 +149,6 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
         constructor: (@person, @x, @y) ->
             @reversePath = AStar(@person,@x,@y)
 
-            console.log(@reversePath)
-
-
         next_step: () ->
             @current = @reversePath.pop()
             @mission = new KI.SimpleTileMovement(@person,@current.x,@current.y)
@@ -171,6 +168,7 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             @mission.update(elapsedTime)
         
         finished: () ->
+            
     KI.TileMovement = TileMovement
 
 

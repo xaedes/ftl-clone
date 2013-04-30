@@ -8,7 +8,7 @@ watch:
 #	coffee -m -w -o src/js -c `find src/coffee/ -iname *.coffee`
 
 server: coffee
-	python2 -m SimpleHTTPServer
+	http-server . -p 8000
 
 tab2space:
 	find src/coffee/ -iname *.coffee -exec sed -i s/'\t'/'    '/g '{}' \;

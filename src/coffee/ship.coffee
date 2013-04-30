@@ -1,21 +1,21 @@
-define(["init","animations","assets","person_ki","ship_data", "door", "room"]
-      ,(init,animations,Assets,PersonKI,ship_data,Door, Room) ->
+define(["init","animations","assets","person_ki","ship_data", "door", "room", "multi_layer_group"]
+      ,(init,animations,Assets,PersonKI,ship_data,Door,Room,MultiLayerGroup) ->
 
 
-    class Ship extends Kinetic.Group
+    class Ship extends MultiLayerGroup
         persons: []
         constructor: (config) ->
             @attrs = 
                 ship: "kestral"
 
-            Kinetic.Group.call(@, config) #Call super constructor
+            super(config) #Call super constructor
+            # Kinetic.Group.call(@, config) #Call super constructor
 
             # Put ship data in @
             @data = ship_data[@attrs.ship]
 
+            # @layers.ship.add(@)
 
-
-            @attrs.layer.add(@)
             
             if animations.ships[@attrs.ship].floor?
                 floor = new Kinetic.Image( 
@@ -36,14 +36,14 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room"]
             @personsGroup = new Kinetic.Group({})
 
             
-            @add(@backgroundGroup)
-            @add(@roomsGroup)
-            @add(@doorsGroup)
-            @add(@personsGroup)
+            @layers.ship.add(@backgroundGroup)
+            @layers.ship.add(@roomsGroup)
+            @layers.ship.add(@doorsGroup)
+            @layers.persons.add(@personsGroup)
 
             @initRoomsAndDoors()
             
-            @on("click tap",(event) => 
+            @layers.ship.on("click tap",(event) => 
                 event.stopPropagation()
                 if @selected_person?
                     switch event.which

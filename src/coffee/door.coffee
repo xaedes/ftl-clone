@@ -22,6 +22,7 @@ define(["animations/doors"],(animations)->
             )
             @highlight = new Kinetic.Image(
                 image: animations.highlight.image
+                opacity: 0.5
             )
     
 
@@ -35,34 +36,33 @@ define(["animations/doors"],(animations)->
             else # left
                 @move(0,+halfTile)
 
-            @add(@sprite)
 
             @highlight_group = new Kinetic.Group()
-            @add(@highlight_group)
             
             @selectionArea = new Kinetic.Rect(
-                # stroke: "black"
                 width: 13
                 height: 18
                 x: 10
                 y: 8
             )
+
+            @add(@highlight_group)
+            @add(@sprite)
             @add(@selectionArea)
 
             if @attrs.selectable
 
                 @selectionArea.on("mouseenter",()=>
-                    @highlight_group.add(@highlight)
-
                     document.body.style.cursor = 'pointer'
-                    @getLayer().draw()
-                    # @draw()
+                    @highlight_group.add(@highlight)
+                    @draw()
                 )
                 @selectionArea.on("mouseleave",()=>
-                    @highlight.remove()
                     document.body.style.cursor = 'default'
-                    @getLayer().draw()
-                    # @draw()
+                    @highlight.remove()
+
+                    # redraw the whole layer for clearing
+                    @getLayer().draw() 
                 )            
 
 

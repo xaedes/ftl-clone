@@ -29,11 +29,9 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
             @highlight = new Kinetic.Image(
                 image: animations.highlight.image
                 opacity: 0.5
-            )
-    
-            @highlight_group = new Kinetic.Group(
                 layer: "doors"
             )
+            @highlight.hide()
             
             @selectionArea = new Kinetic.Rect(
                 width: 13
@@ -42,7 +40,7 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
                 y: 8
                 layer: "selection_areas"
             )
-            @add(@highlight_group)
+            @add(@highlight)
             @add(@sprite)
             @add(@selectionArea)
 
@@ -62,17 +60,19 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
 
 
             if @attrs.selectable
+                # Set event listeners for highlighting
+
                 @selectionArea.on("mouseenter",()=>
                     document.body.style.cursor = 'pointer'
-                    @highlight_group.add(@highlight)
+                    @highlight.show()
                     @draw()
                 )
                 @selectionArea.on("mouseleave",()=>
                     document.body.style.cursor = 'default'
-                    @highlight.remove()
+                    @highlight.hide()
 
                     # redraw the whole layer for clearing
-                    @highlight_group.getLayer().draw() 
+                    @highlight.getLayer().draw() 
                 )            
                 @selectionArea.on("click",()=>
                     @toggleState()
@@ -90,8 +90,8 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
 
             @state = newState
             # switch @state
-            #     when value
-            #         # ...
+            #     when "closing"
+                    
                 
             
 

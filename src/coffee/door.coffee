@@ -5,6 +5,7 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
             # Default attrs
             @attrs = 
                 selectable: true
+                level: 0
             
             # Call super constructor
             super(config) 
@@ -20,12 +21,13 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
             # Create child objects
             @sprite = new Kinetic.Sprite(
                 image: animations.doors.image
-                animation: "level1"
+                animation: "level"+@attrs.level+"_closing"
                 animations: animations.doors.animations
-                frameRate: 4
+                frameRate: 16
                 index: 0
                 layer: "doors"
             )
+
             @highlight = new Kinetic.Image(
                 image: animations.highlight.image
                 opacity: 0.5
@@ -44,6 +46,8 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
             @add(@sprite)
             @add(@selectionArea)
 
+            @setState("closed")
+
             # Set offset and rotation based on direction of door
             halfTile = Math.round(35/2)
 
@@ -56,6 +60,7 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
                 @move(0,+halfTile)
 
 
+            @sprite.start()
 
 
 
@@ -82,6 +87,9 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
             switch @state
                 when "open"
                     @setState("closing")
+                when "closed"
+                    @setState("opening")
+
                 
             
         setState: (newState) ->
@@ -89,14 +97,35 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
                 return
 
             @state = newState
-            # switch @state
-            #     when "closing"
-                    
+            switch @state
+                when "closing"
+                    @sprite.attrs.index = 0
+                    @sprite.attrs.animation = "level"+@attrs.level+"_closing"
+                    @sprite.afterFrame(4,()=>
+                        @sprite.stop()
+                        @setState("closed")
+                    )
+                    @sprite.start()      
+                when "closed"
+                    @sprite.attrs.index = 0
+                    @sprite.attrs.animation = "level"+@attrs.level+"_closed"
+                    @sprite.draw()
+                when "opening"
+                    @sprite.attrs.index = 0
+                    @sprite.attrs.animation = "level"+@attrs.level+"_opening"
+                    @sprite.afterFrame(4,()=>
+                        @sprite.stop()
+                        @setState("open")
+                    )
+                    @sprite.start()      
+                when "open"
+                    @sprite.attrs.index = 0
+                    @sprite.attrs.animation = "level"+@attrs.level+"_open"
+                    @sprite.draw()
                 
             
 
         update: (elapsedTime) ->
-            # @sprite.start()
 
 
             

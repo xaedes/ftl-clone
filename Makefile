@@ -8,7 +8,7 @@ watch:
 #	coffee -m -w -o src/js -c `find src/coffee/ -iname *.coffee`
 
 server: coffee
-	http-server . -p 8000
+	http-server . -p 8000 -c-1
 
 tab2space:
 	find src/coffee/ -iname *.coffee -exec sed -i s/'\t'/'    '/g '{}' \;

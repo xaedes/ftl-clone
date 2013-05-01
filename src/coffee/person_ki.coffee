@@ -23,9 +23,10 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             # calculate actual deltas
             adx = @x - @person.attrs.tile_x
             ady = @y - @person.attrs.tile_y
-            
             if (adx == 0) and (ady == 0)
                 @finished()
+                @cancel_callback() if @cancel_callback?
+                
                 return
             
             # normalize deltas
@@ -47,6 +48,12 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             @person.sprite.direction = "down"
             @person.sprite.action = "standing"
             @person.sprite.update()
+
+        cancel: (callback) ->
+            @cancel_callback = callback
+            
+
+
     KI.SimpleTileMovement = SimpleTileMovement
 
     AStar = (person, x, y) ->
@@ -150,6 +157,8 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             @reversePath = AStar(@person,@x,@y)
 
         next_step: () ->
+            @cancel_callback() if @cancel_callback?
+
             if @reversePath.length
                 @current = @reversePath.pop()
                 @mission = new KI.SimpleTileMovement(@person,@current.x,@current.y)
@@ -157,7 +166,8 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
                     @mission.finished = () =>
                         @next_step()
                 else
-                    @finished()
+                    @mission.finished = () =>
+                        @finished()
             else
                 @finished()
 
@@ -169,7 +179,14 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             @mission.update(elapsedTime) if @mission?
         
         finished: () ->
-            
+            @person.sprite.direction = "down"
+            @person.sprite.action = "standing"
+            @person.sprite.update()
+
+        cancel: (callback) ->
+            @cancel_callback = callback
+            @mission.cancel(callback) if @mission
+
     KI.TileMovement = TileMovement
 
 

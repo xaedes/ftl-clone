@@ -1,9 +1,14 @@
-define([],()->
+define(["multi_layer_container"],(MultiLayerContainer)->
 
-	class Room extends Kinetic.Group
+	class Room extends MultiLayerContainer
 		constructor: (config) ->
-            @attrs = {}
-            Kinetic.Group.call(@, config) #Call super constructor
+            # Default attrs
+            @attrs = 
+                selectable: true
+
+            #Call super constructor
+            super(config)
+            # Kinetic.Group.call(@, config) 
             
             @data = @attrs.data
            	@ship = @attrs.ship
@@ -17,17 +22,28 @@ define([],()->
                 fillEnabled: true
                 strokeEnabled: false
                 fill: "#E4E2D8"
+                layer: "ships"
             )
             @add(bg)
             
-            @backgroundGridGroup = new Kinetic.Group({})
-            @wallGroup = new Kinetic.Group({})
+            @backgroundGridGroup = new Kinetic.Group(
+                layer: "ships"
+            )
+            @wallGroup = new Kinetic.Group(
+                layer: "ships"
+            )
             
             @add(@backgroundGridGroup)
             @add(@wallGroup)
 
             @addLines()
 
+            @selectionArea = new Kinetic.Rect(
+                width: @data.w * @ship.data.tile_size
+                height: @data.h * @ship.data.tile_size
+                layer: "room_selection_areas"
+            )
+            @add(@selectionArea)
 
         update: (elapsedTime) ->
         	# @sprite.start()

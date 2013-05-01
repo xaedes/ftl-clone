@@ -1,31 +1,52 @@
-define(["animations/doors"],(animations)->
+define(["init","animations/doors","multi_layer_container"],(init,animations,MultiLayerContainer)->
 
-    class Door extends Kinetic.Group
+    class Door extends MultiLayerContainer
         constructor: (config) ->
+            # Default attrs
             @attrs = 
                 selectable: true
             
-            Kinetic.Group.call(@, config) #Call super constructor
+            # Call super constructor
+            super(config) 
+            # Kinetic.Group.call(@, config) 
             
             @data = @attrs.data
             @ship = @attrs.ship
 
+            # Set position
             @setX( @data.x * @ship.data.tile_size - @ship.data.tile_offset.x ) 
             @setY( @data.y * @ship.data.tile_size - @ship.data.tile_offset.y ) 
 
+            # Create child objects
             @sprite = new Kinetic.Sprite(
                 image: animations.doors.image
                 animation: "level1"
                 animations: animations.doors.animations
                 frameRate: 4
                 index: 0
+                layer: "doors"
             )
             @highlight = new Kinetic.Image(
                 image: animations.highlight.image
                 opacity: 0.5
             )
     
+            @highlight_group = new Kinetic.Group(
+                layer: "doors"
+            )
+            
+            @selectionArea = new Kinetic.Rect(
+                width: 13
+                height: 18
+                x: 10
+                y: 8
+                layer: "selection_areas"
+            )
+            @add(@highlight_group)
+            @add(@sprite)
+            @add(@selectionArea)
 
+            # Set offset and rotation based on direction of door
             halfTile = Math.round(35/2)
 
             @setOffset(halfTile,halfTile)
@@ -37,21 +58,10 @@ define(["animations/doors"],(animations)->
                 @move(0,+halfTile)
 
 
-            @highlight_group = new Kinetic.Group()
-            
-            @selectionArea = new Kinetic.Rect(
-                width: 13
-                height: 18
-                x: 10
-                y: 8
-            )
 
-            @add(@highlight_group)
-            @add(@sprite)
-            @add(@selectionArea)
+
 
             if @attrs.selectable
-
                 @selectionArea.on("mouseenter",()=>
                     document.body.style.cursor = 'pointer'
                     @highlight_group.add(@highlight)
@@ -62,9 +72,28 @@ define(["animations/doors"],(animations)->
                     @highlight.remove()
 
                     # redraw the whole layer for clearing
-                    @getLayer().draw() 
+                    @highlight_group.getLayer().draw() 
                 )            
+                @selectionArea.on("click",()=>
+                    @toggleState()
+                )
 
+        toggleState: () ->
+            switch @state
+                when "open"
+                    @setState("closing")
+                
+            
+        setState: (newState) ->
+            if @state == newState
+                return
+
+            @state = newState
+            # switch @state
+            #     when value
+            #         # ...
+                
+            
 
         update: (elapsedTime) ->
             # @sprite.start()

@@ -1,15 +1,17 @@
-define(["init","animations","assets","person_ki","ship_data", "door", "room", "multi_layer_group"]
-      ,(init,animations,Assets,PersonKI,ship_data,Door,Room,MultiLayerGroup) ->
+define(["init","animations","assets","person_ki","ship_data", "door", "room", "multi_layer_container"]
+      ,(init,animations,Assets,PersonKI,ship_data,Door,Room,MultiLayerContainer) ->
 
 
-    class Ship extends MultiLayerGroup
+    class Ship extends MultiLayerContainer
         persons: []
         constructor: (config) ->
+            # Default attrs
             @attrs = 
                 ship: "kestral"
 
-            super(config) #Call super constructor
-            # Kinetic.Group.call(@, config) #Call super constructor
+            #Call super constructor
+            super(config) 
+            # Kinetic.Group.call(@, config) 
 
             # Put ship data in @
             @data = ship_data[@attrs.ship]
@@ -25,25 +27,33 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                 image: animations.ships[@attrs.ship].base.image
             )
             
-            @backgroundGroup = new Kinetic.Group({})
+            @backgroundGroup = new Kinetic.Group(
+                layer: "ships"
+            )
             @backgroundGroup.add(base)
             @backgroundGroup.add(floor) if floor?
 
-            @doorsGroup = new Kinetic.Group({})
+            # @doorsGroup = new Kinetic.Group(
+            #     layer: "doors"
+            # )
 
-            @roomsGroup = new Kinetic.Group({})
+            # @roomsGroup = new Kinetic.Group(
+            #     layer: "ships"
+            # )
 
-            @personsGroup = new Kinetic.Group({})
+            # @personsGroup = new Kinetic.Group(
+            #     layer: "persons"
+            # )
 
             
-            @layers.ship.add(@backgroundGroup)
-            @layers.ship.add(@roomsGroup)
-            @layers.ship.add(@doorsGroup)
-            @layers.persons.add(@personsGroup)
+            @add(@backgroundGroup)
+            # @add(@roomsGroup)
+            # @add(@doorsGroup)
+            # @add(@personsGroup)
 
             @initRoomsAndDoors()
             
-            @layers.ship.on("click tap",(event) => 
+            @groups["room_selection_areas"].on("click tap",(event) => 
                 event.stopPropagation()
                 if @selected_person?
                     switch event.which
@@ -117,7 +127,7 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                     ship: @
                     data: doorData
 
-                @doorsGroup.add(door)
+                @add(door)
 
             # Create room objects
             for roomData in @data.rooms
@@ -125,7 +135,7 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                     data: roomData
                     ship: @
                 )
-                @roomsGroup.add(room)
+                @add(room)
 
 
 
@@ -177,7 +187,7 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
             
         addPerson: (person) ->
             person.ship = this
-            @personsGroup.add(person)
+            @add(person)
             person.selectionArea.on("click",(event) =>
                 switch event.which
                     when 1 # left click

@@ -10,11 +10,14 @@ define([], () ->
             background: new Kinetic.Layer()
             ships: new Kinetic.Layer()
             persons: new Kinetic.Layer()
+            doors: new Kinetic.Layer()
+            room_selection_areas: new Kinetic.Layer()
+            selection_areas: new Kinetic.Layer()
     }
 
-    init.stage.add(init.layers.background)
-    init.stage.add(init.layers.ships)
-    init.stage.add(init.layers.persons)
+    for layername, layer of init.layers
+        layer.name = layername
+        init.stage.add(layer)
 
     return init
 )

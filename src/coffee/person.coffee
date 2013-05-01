@@ -1,16 +1,22 @@
-define(["init","assets","animations"], \
-        (init, Assets, animations) ->
+define(["init","assets","animations","multi_layer_container"], \
+        (init, Assets, animations,MultiLayerContainer) ->
             
-    class Person extends Kinetic.Group
+    class Person extends MultiLayerContainer
         constructor: (config) ->
             #http://stackoverflow.com/questions/14530450/coffeescript-class/14536430#14536430
+
+            # Default attrs
             @attrs = 
                 selectable: true
                 selected: false
                 tile_x: 0
                 tile_y: 0
                 tile_speed: 2/1000
-            Kinetic.Group.call(@, config) #Call super constructor
+
+
+            #Call super constructor
+            super(config)
+            # Kinetic.Group.call(@, config) 
 
             if @attrs.race not in animations.persons.races
                 console.log "Error. Unknown person type!"
@@ -26,10 +32,13 @@ define(["init","assets","animations"], \
                     animations: animations.persons[@attrs.race].yellow.walking
                     frameRate: 16
                     index: 0
+                    layer: "persons"
                 )
 
-            @spriteContainer = new Kinetic.Group({})
-            @add(@spriteContainer)
+            # @spriteContainer = new Kinetic.Group(
+            #     layer: "persons"
+            # )
+            # @add(@spriteContainer)
 
             @sprite = 
                 color: "yellow"
@@ -48,7 +57,7 @@ define(["init","assets","animations"], \
                     @active_sprite.stop() if @active_sprite?
 
                     @active_sprite = @sprites[@sprite.color]
-                    @spriteContainer.add(@active_sprite)
+                    @add(@active_sprite)
                     @active_sprite.start()
 
 
@@ -56,8 +65,11 @@ define(["init","assets","animations"], \
                 radius: 16/2
                 x: 35/2-1
                 y: 35/2-1
+                # stroke: "red"
+                layer: "selection_areas"
             )
             @add(@selectionArea)
+            @draw()
 
             if @attrs.selectable
                 @selectionArea.on("mouseenter",()=>
@@ -83,7 +95,7 @@ define(["init","assets","animations"], \
             @mission.update(elapsedTime) if @mission?
             @setX( @attrs.tile_x * @ship.data.tile_size - @ship.data.tile_offset.x ) 
             @setY( @attrs.tile_y * @ship.data.tile_size - @ship.data.tile_offset.y )
-            
+            @selectionArea.getLayer().draw()            
 
         
     return Person

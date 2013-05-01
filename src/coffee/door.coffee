@@ -90,7 +90,8 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
                 when "closed"
                     @setState("opening")
 
-                
+        isWalkable: () ->
+            return (@state == "open") or (@state == "opening") or (@state == "closing")
             
         setState: (newState) ->
             if @state == newState

@@ -43,6 +43,8 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             direction = directions[ndx][ndy]
             @person.sprite.direction = direction if direction?
             @person.sprite.update()
+
+
         
         finished: () ->
             @person.sprite.direction = "down"
@@ -160,13 +162,38 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             @cancel_callback() if @cancel_callback?
 
             if @reversePath.length
-                @current = @reversePath.pop()
-                @mission = new KI.SimpleTileMovement(@person,@current.x,@current.y)
+                @next = @reversePath.pop()
+
+                # add sub mission to reach next tile
+                @mission = new KI.SimpleTileMovement(@person,@next.x,@next.y)
+
+                # check if there is a door
+                id1 = @person.ship.tiles[Math.round(@person.attrs.tile_x)][Math.round(@person.attrs.tile_y)].room_id
+                id2 = @person.ship.tiles[@next.x][@next.y].room_id
+                if id1 != id2
+                    @mission.door = @person.ship.tiles[@next.x][@next.y].reachable_rooms[id1]
+                    if not @mission.door.isWalkable()
+                        @mission.door.toggleState()
+                        @mission.close_door = true
+
+
+
+                
+                # if there are more tiles to reach set callback to do the next step when current sub mission is finished
                 if @reversePath.length > 0
+
                     @mission.finished = () =>
+                        if @mission.close_door
+                            @mission.door.toggleState()
+                            delete @mission.door
+                            delete @mission.close_door
                         @next_step()
                 else
                     @mission.finished = () =>
+                        if @mission.close_door
+                            @mission.door.toggleState()
+                            delete @mission.door
+                            delete @mission.close_door
                         @finished()
             else
                 @finished()

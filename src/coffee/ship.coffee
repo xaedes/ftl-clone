@@ -102,39 +102,40 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                         @tiles[x+roomData.x][y+roomData.y].room_id = roomData.id
 
 
+
+            # Create door objects 
+            #    and
             # Set reachability of rooms via doors
             @doors = []
             for doorData in @data.doors
+                # Create door object
+                door = new Door
+                    ship: @
+                    data: doorData
+                @add(door)
+                # Make sure id1 contains the room that is reachable from @tiles[doorData.x][doorData.y]
                 if @tiles[doorData.x][doorData.y].room_id == doorData.id1
-                    # sometimes the ids are swapped
-                    # make sure id1 contains the room that is reachable from @tiles[doorData.x][doorData.y]
                     tmp = doorData.id1
                     doorData.id1 = doorData.id2
                     doorData.id2 = tmp
 
-                @tiles[doorData.x][doorData.y].reachable_rooms = @tiles[doorData.x][doorData.y].reachable_rooms || []
-                @tiles[doorData.x][doorData.y].reachable_rooms.push(doorData.id1)
+                # Set reachable rooms of @tiles[doorData.x][doorData.y]
+                @tiles[doorData.x][doorData.y].reachable_rooms[doorData.id1] = door
+
+                # ... and vice versa 
                 if doorData.direction == 0 # up
                     @tiles[doorData.x][doorData.y].open.push("up")
                     if doorData.y-1 >= 0
                         @tiles[doorData.x][doorData.y-1].open.push("down")
-                        @tiles[doorData.x][doorData.y-1].reachable_rooms = @tiles[doorData.x][doorData.y-1].reachable_rooms || []
-                        @tiles[doorData.x][doorData.y-1].reachable_rooms.push(doorData.id2)
+                        @tiles[doorData.x][doorData.y-1].reachable_rooms[doorData.id2] = door
                 else # left
                     @tiles[doorData.x][doorData.y].open.push("left")
                     if doorData.x-1 >= 0
                         @tiles[doorData.x-1][doorData.y].open.push("right")
-                        @tiles[doorData.x-1][doorData.y].reachable_rooms = @tiles[doorData.x-1][doorData.y].reachable_rooms || []
-                        @tiles[doorData.x-1][doorData.y].reachable_rooms.push(doorData.id2)
+                        @tiles[doorData.x-1][doorData.y].reachable_rooms[doorData.id2] = door
 
 
-            # Create door objects
-            for doorData in @data.doors
-                door = new Door
-                    ship: @
-                    data: doorData
 
-                @add(door)
 
             # Create room objects
             for roomData in @data.rooms
@@ -159,7 +160,7 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                                 if (dx * dy == 0) # horizontal or vertical 
                                     if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # in same room without door allowed
                                         neighbors.push({x:dx+x,y:dy+y})
-                                    else if (@tiles[x+dx][y+dy].room_id in @tiles[x][y].reachable_rooms) or (@tiles[x][y].room_id in @tiles[x+dx][y+dy].reachable_rooms)
+                                    else if (@tiles[x][y].reachable_rooms[@tiles[x+dx][y+dy].room_id]?) or (@tiles[x+dx][y+dy].reachable_rooms[@tiles[x][y].room_id]?)
                                         neighbors.push({x:dx+x,y:dy+y})
                                 # else if @tiles[x][y].room_id == @tiles[x+dx][y+dy].room_id # diagonal only allowed in same room
                                     # neighbors.push({x:dx+x,y:dy+y})

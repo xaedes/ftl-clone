@@ -34,11 +34,8 @@ define(["init","assets","animations","multi_layer_container"], \
                     index: 0
                     layer: "persons"
                 )
-
-            # @spriteContainer = new Kinetic.Group(
-            #     layer: "persons"
-            # )
-            # @add(@spriteContainer)
+                @sprites[color].hide()
+                @add(@sprites[color])
 
             @sprite = 
                 color: "yellow"
@@ -53,11 +50,11 @@ define(["init","assets","animations","multi_layer_container"], \
                     if(@active_sprite == @sprites[@sprite.color])
                         return
 
-                    @active_sprite.remove() if @active_sprite?
+                    @active_sprite.hide() if @active_sprite?
                     @active_sprite.stop() if @active_sprite?
 
                     @active_sprite = @sprites[@sprite.color]
-                    @add(@active_sprite)
+                    @active_sprite.show()
                     @active_sprite.start()
 
 
@@ -72,6 +69,8 @@ define(["init","assets","animations","multi_layer_container"], \
             @draw()
 
             if @attrs.selectable
+                # Set event listeners for highlighting
+                
                 @selectionArea.on("mouseenter",()=>
                     @sprite.color = "highlight" if not @attrs.selected
                     document.body.style.cursor = 'pointer'

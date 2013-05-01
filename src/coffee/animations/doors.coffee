@@ -13,25 +13,25 @@ define(["assets"], (Assets) ->
                 y: k*35
                 width: 35
                 height: 35
-            } for x in [0..4].reverse())
+            } for x in [0..4])
         doors.doors.animations["level"+k+"_closing"] = ({
                 x: x*35
                 y: k*35
                 width: 35
                 height: 35
-            } for x in [0..4])
+            } for x in [0..4].reverse())
         doors.doors.animations["level"+k+"_open"] = ({
                 x: x*35
                 y: k*35
                 width: 35
                 height: 35
-            } for x in [0])
+            } for x in [4])
         doors.doors.animations["level"+k+"_closed"] = ({
                 x: x*35
                 y: k*35
                 width: 35
                 height: 35
-            } for x in [4])
+            } for x in [0])
 
 
 

@@ -16,9 +16,6 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
             # Put ship data in @
             @data = ship_data[@attrs.ship]
 
-            # @layers.ship.add(@)
-
-            
             if animations.ships[@attrs.ship].floor?
                 floor = new Kinetic.Image( 
                     image: animations.ships[@attrs.ship].floor.image 
@@ -33,23 +30,7 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
             @backgroundGroup.add(base)
             @backgroundGroup.add(floor) if floor?
 
-            # @doorsGroup = new Kinetic.Group(
-            #     layer: "doors"
-            # )
-
-            # @roomsGroup = new Kinetic.Group(
-            #     layer: "ships"
-            # )
-
-            # @personsGroup = new Kinetic.Group(
-            #     layer: "persons"
-            # )
-
-            
             @add(@backgroundGroup)
-            # @add(@roomsGroup)
-            # @add(@doorsGroup)
-            # @add(@personsGroup)
 
             @initRoomsAndDoors()
             

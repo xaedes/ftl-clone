@@ -64,9 +64,13 @@ for infile in glob.glob( os.path.join('', '*.txt') ):
         data["tile_size"] = 35
         readTXT("%s.txt" % shipname, data)
         readXML("%s.xml" % shipname, data)
+
+        # Create ouput directory when necessary
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
         with open(join(output_dir,"%s.json" % shipname),"w") as f:
             f.write(json.dumps(data, indent=4, separators=(',', ': ')))
-        # print splitext(infile)[0]
+
 exit(0)
 
 print json.dumps(data, indent=4, separators=(',', ': ')) #.replace('"','')

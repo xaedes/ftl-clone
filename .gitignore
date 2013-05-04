@@ -7,6 +7,10 @@ src/js/animations/*.js
 src/js/animations/*.map
 src/js/datastructures/*.js
 src/js/datastructures/*.map
+src/js/data/*.js
+src/js/data/*.map
+
+src/coffee/data/*.coffee
 
 src/img
 src/data

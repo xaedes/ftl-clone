@@ -19,4 +19,4 @@ extract_resources:
 
 extract_ships:
 	cd ftl-resources/data/; \
-	python2 ../../tools/convert_ships.py ../../src/data/ships
+	python2 ../../tools/convert_ships.py ../../src/data/ships ../../src/coffee/data

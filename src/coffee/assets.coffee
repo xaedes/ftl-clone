@@ -65,21 +65,32 @@ define(["utils"], \
             bundles = bundles.split(' ')
 
             toLoad = 0
+
+            callback_called = false
+
             for bundle in bundles
                 for prop of @bundles[bundle]
-                    if @bundles[bundle][prop].hasOwnProperty("load")
-                        toLoad++
-                        @bundles[bundle][prop].load()
-                        @bundles[bundle][prop].onload = () =>
-                            @loaded = true
-                            toLoad--
-                            if(toLoad == 0)
-                                callback() if callback?
-                    # else if @bundles[bundle][prop] 
-                        # ...
-                    
-                        # ...
-                    
+                    if not(@bundles[bundle][prop].hasOwnProperty("loaded") and @bundles[bundle][prop].loaded)
+                        if @bundles[bundle][prop].hasOwnProperty("load")
+                            toLoad++
+                            @bundles[bundle][prop].onload = () =>
+                                @bundles[bundle][prop].loaded = true
+                                toLoad--
+                                if(toLoad == 0)
+                                    callback() if callback?
+                                    callback_called = true
+            for bundle in bundles
+                for prop of @bundles[bundle]
+                    if not(@bundles[bundle][prop].hasOwnProperty("loaded") and @bundles[bundle][prop].loaded)
+                        if @bundles[bundle][prop].hasOwnProperty("load")
+
+                            @bundles[bundle][prop].load()
+                        # else if @bundles[bundle][prop] 
+                            # ...
+                        
+                            # ...
+            if (toLoad == 0) and not callback_called
+                callback() if callback?
 
 
     return Assets

@@ -18,10 +18,10 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
 
             if animations.ships[@attrs.ship].floor?
                 floor = new Kinetic.Image( 
-                    image: animations.ships[@attrs.ship].floor.image 
+                    image: animations.ships[@attrs.ship].floor 
                 )
             base = new Kinetic.Image( 
-                image: animations.ships[@attrs.ship].base.image
+                image: animations.ships[@attrs.ship].base
             )
             
             @backgroundGroup = new Kinetic.Group(
@@ -76,12 +76,21 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                         reachable_rooms: []
                         open: []
 
+            @roomsById = []
             # Set room assignments
             for roomData in @data.rooms
+                # Create room object
+                room = new Room(
+                    data: roomData
+                    ship: @
+                )
+                @add(room)
+                @roomsById[roomData.id] = room
+
                 for x in [0..roomData.w-1]
                     for y in [0..roomData.h-1]
                         @tiles[x+roomData.x][y+roomData.y].room_id = roomData.id
-
+                        @tiles[x+roomData.x][y+roomData.y].room = room
 
 
             # Create door objects 
@@ -114,18 +123,6 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                     if doorData.x-1 >= 0
                         @tiles[doorData.x-1][doorData.y].open.push("right")
                         @tiles[doorData.x-1][doorData.y].reachable_rooms[doorData.id2] = door
-
-
-
-
-            # Create room objects
-            for roomData in @data.rooms
-                room = new Room(
-                    data: roomData
-                    ship: @
-                )
-                @add(room)
-
 
 
         getWalkableNeighbors: (x,y) ->

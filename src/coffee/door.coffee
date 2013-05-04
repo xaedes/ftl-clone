@@ -59,6 +59,8 @@ define(["init","animations/doors","multi_layer_container"],(init,animations,Mult
             else # left
                 @move(0,+halfTile)
 
+            @move(1,1)
+
 
             @sprite.start()
 

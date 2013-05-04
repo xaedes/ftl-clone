@@ -32,7 +32,7 @@ define(["utils"], \
                 @all_assets[url].load = () ->
                     @src = @url
 
-                handleBundle.call(@, url, bundle)
+            handleBundle.call(@, url, bundle)
 
             return @all_assets[url]
         
@@ -57,7 +57,7 @@ define(["utils"], \
                         @onload() if @onload?
                     )
 
-                handleBundle.call(@, url, bundle)
+            handleBundle.call(@, url, bundle)
 
             return @all_assets[url]
 

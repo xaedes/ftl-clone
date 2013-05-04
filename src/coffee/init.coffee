@@ -9,6 +9,8 @@ define([], () ->
         layers:
             background: new Kinetic.Layer()
             ships: new Kinetic.Layer()
+            interior: new Kinetic.Layer()
+            walls: new Kinetic.Layer()
             doors: new Kinetic.Layer()
             persons: new Kinetic.Layer()
             room_selection_areas: new Kinetic.Layer()

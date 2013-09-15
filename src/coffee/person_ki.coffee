@@ -167,10 +167,10 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
                 # add sub mission to reach next tile
                 @mission = new KI.SimpleTileMovement(@person,@next.x,@next.y)
 
-                # check if there is a door
+                # check if there is a door between here and the next tile
                 id1 = @person.ship.tiles[Math.round(@person.attrs.tile_x)][Math.round(@person.attrs.tile_y)].room_id
                 id2 = @person.ship.tiles[@next.x][@next.y].room_id
-                if id1 != id2
+                if id1 != id2 # not the same room
                     @mission.door = @person.ship.tiles[@next.x][@next.y].reachable_rooms[id1]
                     if not @mission.door.isWalkable()
                         @mission.door.toggleState()

@@ -43,8 +43,11 @@ define(["init","animations","assets","person_ki","ship_data", "door", "room", "m
                         when 3 # right click
                             absPos = @getAbsolutePosition()
                             tile_pos = @calculateTileXY(event.layerX - absPos.x, event.layerY - absPos.y)
+
+                            # check whether there is a room in the clicked tile
                             if (tile_pos.x >= 0) and (tile_pos.y >= 0) and (tile_pos.x < @tiles.w) and (tile_pos.y < @tiles.h) \
                                 and @tiles[tile_pos.x][tile_pos.y].room_id?
+
                                     if @selected_person.mission?
                                         @selected_person.mission.cancel( () => 
                                             mission = new PersonKI.TileMovement(@selected_person,tile_pos.x,tile_pos.y)

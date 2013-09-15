@@ -26,14 +26,9 @@ define(["multi_layer_container","animations/ships"],(MultiLayerContainer,ships_i
             )
             @add(bg)
 
-            if @data["system"]? and ships_images[@ship.attrs.ship][@data["system"]["name"]]?
-                console.log(ships_images[@ship.attrs.ship][@data["system"]["name"]].url)
-                system = new Kinetic.Image(
-                    image: ships_images[@ship.attrs.ship][@data["system"]["name"]]
-                    layer: "interior"
-                    # y: -1
-                )
-                @add(system)
+            if @data["system"]? and @data["system"]["start"] == "true"
+                @addSystem()
+
 
             
             @backgroundGridGroup = new Kinetic.Group(
@@ -54,6 +49,15 @@ define(["multi_layer_container","animations/ships"],(MultiLayerContainer,ships_i
                 layer: "room_selection_areas"
             )
             @add(@selectionArea)
+
+        addSystem: () ->
+            if @data["system"]? and ships_images[@ship.attrs.ship][@data["system"]["name"]]?
+                system = new Kinetic.Image(
+                    image: ships_images[@ship.attrs.ship][@data["system"]["name"]]
+                    layer: "interior"
+                    # y: -1
+                )
+                @add(system)            
 
         update: (elapsedTime) ->
         	# @sprite.start()

@@ -6,15 +6,15 @@ define(["init"],(init)->
         constructor: (config) ->
             @createAttrs()
             @attrs.stage = init.stage
+            @attrs.layers = @attrs.stage.getChildren()
 
             #Call super constructor
             Kinetic.Container.call(@, config)
 
             # Add Group objects to every layer in @attrs.stage
             this.parent = @attrs.stage
-            children = @attrs.stage.getChildren()
             @groups = {}
-            for layer in children
+            for layer in @attrs.layers
                 @groups[layer.name] = new Kinetic.Group(config)
                 layer.add(@groups[layer.name])
 
@@ -31,7 +31,10 @@ define(["init"],(init)->
 
                 else
                     # add child to correct Group
-                    @groups[child.attrs.layer].add(child)
+                    if @groups[child.attrs.layer]?
+                        @groups[child.attrs.layer].add(child)
+                    else
+                        console.log("layer " + child.attrs.layer + " not found in MultiLayerContainer")
 
             @oldSetAttr = @setAttr
             @setAttr = (key, val) =>

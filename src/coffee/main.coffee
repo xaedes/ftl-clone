@@ -17,9 +17,6 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
 
 
         ship = new Ship(
-            layers: 
-                ship: init.layers.ships
-                persons: init.layers.persons
             ship: "kestral"
             x: 100
             y: 75

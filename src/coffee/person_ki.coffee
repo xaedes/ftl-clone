@@ -12,8 +12,26 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
             "-1": "right"
             "0": "right"
             "1": "right"
-    KI={}
-    class SimpleTileMovement
+    KI = {}
+
+    class KIBase
+        eventListeners: []
+
+        on: (eventsStr, handler) -> 
+            events = eventsStr.split(' ')
+            for event in events
+                @eventListeners[event] = [] if not @eventListeners[event]?
+                @eventListeners[event].push(
+                    handler: handler)
+
+        fire: (event, evtObj) ->
+            evtObj = evtObj || {}
+            for eventListener in @eventListeners[event]
+                eventListener.handler.apply(this, [evtObj])
+
+
+
+    class SimpleTileMovement extends KIBase
         # Handles movement of a person
         constructor: (@person, @x, @y) ->
             @person.sprite.action = "walking"
@@ -154,7 +172,7 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
 
             return []
 
-    class TileMovement
+    class TileMovement extends KIBase
         constructor: (@person, @x, @y) ->
             @reversePath = AStar(@person,@x,@y)
 
@@ -217,7 +235,7 @@ define(["math","datastructures/priority_queue","datastructures/set"], (Math,Prio
     KI.TileMovement = TileMovement
 
 
-    class RandomWalker
+    class RandomWalker extends KIBase
         # Lets a person randomly walk
         constructor: (@person) ->
         

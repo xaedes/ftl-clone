@@ -28,16 +28,16 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         # person.mission = new PersonKI.SimpleTileMovement(person, 1,3)
 
 
-        # for i in [1..10]
-        #     new_person = new Person(
-        #         layer: init.layers.persons
-        #         race: "human"
-        #         tile_x: Math.randomIntBounds(6,9)
-        #         tile_y: Math.randomIntBounds(1,4)
-        #         selectable: false
-        #     )
-        #     new_person.mission = new PersonKI.RandomWalker(new_person)
-        #     ship.addPerson(new_person)
+        for i in [1..10]
+            new_person = new Person(
+                layer: init.layers.persons
+                race: "human"
+                tile_x: Math.randomIntBounds(6,9)
+                tile_y: Math.randomIntBounds(1,4)
+                selectable: false
+            )
+            new_person.mission = new PersonKI.RandomWalker(new_person)
+            ship.addPerson(new_person)
 
 
         init.layers.background.add(new Kinetic.Rect(
@@ -47,16 +47,20 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         ))
         init.stage.draw()
 
-        fps = 100
+        fps = 60
         lastTime = Date.now()
         game_loop = ()->
             elapsedTime = Date.now() - lastTime
 
-            ship.update(elapsedTime)
+            console.log(1000/elapsedTime)
+
+            ship.update(1)
+            # ship.update(elapsedTime)
 
 
             lastTime = Date.now()
 
+            init.layers.selection_areas.draw()
             # init.stage.draw()
         
         window.setInterval(game_loop,1000/fps)

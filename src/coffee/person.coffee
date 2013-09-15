@@ -11,7 +11,9 @@ define(["init","assets","animations","multi_layer_container"], \
                 selected: false
                 tile_x: 0
                 tile_y: 0
-                tile_speed: 2/1000
+                tile_speed: 1/35
+                # tile_speed:  1/1000 #tiles per ms
+                layers: [init.layers.persons, init.layers.selection_areas]
 
 
             #Call super constructor
@@ -30,7 +32,7 @@ define(["init","assets","animations","multi_layer_container"], \
                     image: animations.persons[@attrs.race][color].image
                     animation: 'right'
                     animations: animations.persons[@attrs.race].yellow.walking
-                    frameRate: 16
+                    frameRate: 8
                     index: 0
                     layer: "persons"
                 )
@@ -94,7 +96,7 @@ define(["init","assets","animations","multi_layer_container"], \
             @mission.update(elapsedTime) if @mission?
             @setX( @attrs.tile_x * @ship.data.tile_size - @ship.data.tile_offset.x ) 
             @setY( @attrs.tile_y * @ship.data.tile_size - @ship.data.tile_offset.y )
-            @selectionArea.getLayer().draw()            
+      
 
         
     return Person

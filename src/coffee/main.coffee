@@ -52,7 +52,7 @@ define(["init","person","ship","assets", "person_ki"], (init, Person, Ship, Asse
         game_loop = ()->
             elapsedTime = Date.now() - lastTime
 
-            console.log(1000/elapsedTime)
+            # console.log(1000/elapsedTime)
 
             ship.update(1)
             # ship.update(elapsedTime)
